@@ -1,0 +1,512 @@
+{
+  "iphone 15": [
+    {
+      "title": "Apple iPhone 15 (128 GB) - Blue",
+      "price": 69900,
+      "price_display": "₹69,900",
+      "url": "https://www.flipkart.com/apple-iphone-15-blue-128gb",
+      "store": "flipkart",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-blue?wid=2560&hei=2560&fmt=p-jpg&qlt=80"
+    },
+    {
+      "title": "Apple iPhone 15 128GB Blue",
+      "price": 71999,
+      "price_display": "₹71,999",
+      "url": "https://www.amazon.in/apple-iphone-15-128gb",
+      "store": "amazon",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-blue?wid=2560&hei=2560&fmt=p-jpg&qlt=80"
+    },
+    {
+      "title": "iPhone 15 - 128GB - Blue",
+      "price": 70490,
+      "price_display": "₹70,490",
+      "url": "https://www.croma.com/iphone-15-blue",
+      "store": "croma",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-blue?wid=2560&hei=2560&fmt=p-jpg&qlt=80"
+    },
+    {
+      "title": "Apple iPhone 15 (Blue, 128GB)",
+      "price": 72500,
+      "price_display": "₹72,500",
+      "url": "https://www.reliancedigital.in/iphone-15",
+      "store": "reliance digital",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-blue?wid=2560&hei=2560&fmt=p-jpg&qlt=80"
+    }
+  ],
+  "samsung galaxy s24": [
+    {
+      "title": "Samsung Galaxy S24 5G (Marble Gray, 256GB)",
+      "price": 74999,
+      "price_display": "₹74,999",
+      "url": "https://www.flipkart.com/samsung-galaxy-s24-gray",
+      "store": "flipkart",
+      "image": "https://m.media-amazon.com/images/I/71wpHQUqdFL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "Samsung Galaxy S24 256GB Marble Gray",
+      "price": 76999,
+      "price_display": "₹76,999",
+      "url": "https://www.amazon.in/samsung-s24",
+      "store": "amazon",
+      "image": "https://m.media-amazon.com/images/I/71wpHQUqdFL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "Galaxy S24 5G 256GB - Gray",
+      "price": 75499,
+      "price_display": "₹75,499",
+      "url": "https://www.croma.com/samsung-s24",
+      "store": "croma",
+      "image": "https://m.media-amazon.com/images/I/71wpHQUqdFL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "Samsung S24 5G (Marble Gray, 256GB)",
+      "price": 77990,
+      "price_display": "₹77,990",
+      "url": "https://www.reliancedigital.in/samsung-s24",
+      "store": "reliance digital",
+      "image": "https://m.media-amazon.com/images/I/71wpHQUqdFL._AC_SL1500_.jpg"
+    }
+  ],
+  "oneplus 12": [
+    {
+      "title": "OnePlus 12 5G (Flowy Emerald, 256GB)",
+      "price": 64999,
+      "price_display": "₹64,999",
+      "url": "https://www.flipkart.com/oneplus-12-emerald",
+      "store": "flipkart",
+      "image": "https://m.media-amazon.com/images/I/71t3gmWvEyL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "OnePlus 12 256GB Flowy Emerald",
+      "price": 66499,
+      "price_display": "₹66,499",
+      "url": "https://www.amazon.in/oneplus-12",
+      "store": "amazon",
+      "image": "https://m.media-amazon.com/images/I/71t3gmWvEyL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "OnePlus 12 5G - 256GB Emerald",
+      "price": 65999,
+      "price_display": "₹65,999",
+      "url": "https://www.croma.com/oneplus-12",
+      "store": "croma",
+      "image": "https://m.media-amazon.com/images/I/71t3gmWvEyL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "OnePlus 12 (Flowy Emerald, 256GB)",
+      "price": 67500,
+      "price_display": "₹67,500",
+      "url": "https://www.reliancedigital.in/oneplus-12",
+      "store": "reliance digital",
+      "image": "https://m.media-amazon.com/images/I/71t3gmWvEyL._AC_SL1500_.jpg"
+    }
+  ],
+  "macbook air m2": [
+    {
+      "title": "Apple MacBook Air M2 Chip (8GB, 256GB SSD) - Midnight",
+      "price": 99900,
+      "price_display": "₹99,900",
+      "url": "https://www.flipkart.com/macbook-air-m2",
+      "store": "flipkart",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba15-midnight-select-202306?wid=2000&hei=2000&fmt=jpeg&qlt=90"
+    },
+    {
+      "title": "MacBook Air 13-inch M2 256GB Midnight",
+      "price": 101990,
+      "price_display": "₹1,01,990",
+      "url": "https://www.amazon.in/macbook-air-m2",
+      "store": "amazon",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba15-midnight-select-202306?wid=2000&hei=2000&fmt=jpeg&qlt=90"
+    },
+    {
+      "title": "Apple MacBook Air M2 - 256GB Midnight",
+      "price": 100490,
+      "price_display": "₹1,00,490",
+      "url": "https://www.croma.com/macbook-air-m2",
+      "store": "croma",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba15-midnight-select-202306?wid=2000&hei=2000&fmt=jpeg&qlt=90"
+    },
+    {
+      "title": "MacBook Air M2 (8GB RAM, 256GB) - Midnight",
+      "price": 102900,
+      "price_display": "₹1,02,900",
+      "url": "https://www.reliancedigital.in/macbook-air-m2",
+      "store": "reliance digital",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba15-midnight-select-202306?wid=2000&hei=2000&fmt=jpeg&qlt=90"
+    }
+  ],
+  "dell xps 13": [
+    {
+      "title": "Dell XPS 13 Intel Core i7 13th Gen (16GB, 512GB SSD)",
+      "price": 134990,
+      "price_display": "₹1,34,990",
+      "url": "https://www.flipkart.com/dell-xps-13",
+      "store": "flipkart",
+      "image": "https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/xps-notebooks/xps-13-9320/spi/xps-13-9320-cnt-silver-non-touch-nvidia-gallery-5.psd?fmt=pjpg&pscan=auto&scl=1&hei=402&wid=402&qlt=90%2C0&resMode=sharp2&size=402%2C402&chrss=full"
+    },
+    {
+      "title": "Dell XPS 13 Laptop i7 13th Gen 16GB 512GB",
+      "price": 136999,
+      "price_display": "₹1,36,999",
+      "url": "https://www.amazon.in/dell-xps-13",
+      "store": "amazon",
+      "image": "https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/xps-notebooks/xps-13-9320/spi/xps-13-9320-cnt-silver-non-touch-nvidia-gallery-5.psd?fmt=pjpg&pscan=auto&scl=1&hei=402&wid=402&qlt=90%2C0&resMode=sharp2&size=402%2C402&chrss=full"
+    },
+    {
+      "title": "XPS 13 - Intel i7 13th Gen 16GB/512GB",
+      "price": 135490,
+      "price_display": "₹1,35,490",
+      "url": "https://www.croma.com/dell-xps-13",
+      "store": "croma",
+      "image": "https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/xps-notebooks/xps-13-9320/spi/xps-13-9320-cnt-silver-non-touch-nvidia-gallery-5.psd?fmt=pjpg&pscan=auto&scl=1&hei=402&wid=402&qlt=90%2C0&resMode=sharp2&size=402%2C402&chrss=full"
+    },
+    {
+      "title": "Dell XPS 13 (i7, 16GB RAM, 512GB SSD)",
+      "price": 138500,
+      "price_display": "₹1,38,500",
+      "url": "https://www.reliancedigital.in/dell-xps-13",
+      "store": "reliance digital",
+      "image": "https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/xps-notebooks/xps-13-9320/spi/xps-13-9320-cnt-silver-non-touch-nvidia-gallery-5.psd?fmt=pjpg&pscan=auto&scl=1&hei=402&wid=402&qlt=90%2C0&resMode=sharp2&size=402%2C402&chrss=full"
+    }
+  ],
+  "sony wh-1000xm5": [
+    {
+      "title": "Sony WH-1000XM5 Wireless Noise Cancelling Headphones - Black",
+      "price": 28990,
+      "price_display": "₹28,990",
+      "url": "https://www.flipkart.com/sony-wh-1000xm5",
+      "store": "flipkart",
+      "image": "https://m.media-amazon.com/images/I/81Tend2NLgL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "Sony WH-1000XM5 Bluetooth Headphones Black",
+      "price": 29990,
+      "price_display": "₹29,990",
+      "url": "https://www.amazon.in/sony-wh-1000xm5",
+      "store": "amazon",
+      "image": "https://m.media-amazon.com/images/I/81Tend2NLgL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "Sony WH-1000XM5 - Noise Cancelling Black",
+      "price": 29490,
+      "price_display": "₹29,490",
+      "url": "https://www.croma.com/sony-wh-1000xm5",
+      "store": "croma",
+      "image": "https://m.media-amazon.com/images/I/81Tend2NLgL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "Sony WH-1000XM5 Wireless Headphones (Black)",
+      "price": 30500,
+      "price_display": "₹30,500",
+      "url": "https://www.reliancedigital.in/sony-wh-1000xm5",
+      "store": "reliance digital",
+      "image": "https://m.media-amazon.com/images/I/81Tend2NLgL._AC_SL1500_.jpg"
+    }
+  ],
+  "airpods pro": [
+    {
+      "title": "Apple AirPods Pro (2nd Generation) with MagSafe Case",
+      "price": 24900,
+      "price_display": "₹24,900",
+      "url": "https://www.flipkart.com/airpods-pro-2",
+      "store": "flipkart",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MDAM2?wid=2000&hei=2000&fmt=jpeg&qlt=90"
+    },
+    {
+      "title": "AirPods Pro 2nd Gen with MagSafe Charging",
+      "price": 25999,
+      "price_display": "₹25,999",
+      "url": "https://www.amazon.in/airpods-pro-2",
+      "store": "amazon",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MDAM2?wid=2000&hei=2000&fmt=jpeg&qlt=90"
+    },
+    {
+      "title": "Apple AirPods Pro 2nd Generation",
+      "price": 25490,
+      "price_display": "₹25,490",
+      "url": "https://www.croma.com/airpods-pro-2",
+      "store": "croma",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MDAM2?wid=2000&hei=2000&fmt=jpeg&qlt=90"
+    },
+    {
+      "title": "AirPods Pro (2nd Gen) with MagSafe",
+      "price": 26500,
+      "price_display": "₹26,500",
+      "url": "https://www.reliancedigital.in/airpods-pro-2",
+      "store": "reliance digital",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MDAM2?wid=2000&hei=2000&fmt=jpeg&qlt=90"
+    }
+  ],
+  "apple watch series 9": [
+    {
+      "title": "Apple Watch Series 9 GPS 41mm Midnight Aluminium",
+      "price": 41900,
+      "price_display": "₹41,900",
+      "url": "https://www.flipkart.com/apple-watch-series-9",
+      "store": "flipkart",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/apple-watch-series-9-select-202309_GEO_US?wid=2000&hei=2000&fmt=jpeg&qlt=90"
+    },
+    {
+      "title": "Apple Watch Series 9 41mm GPS Midnight",
+      "price": 42990,
+      "price_display": "₹42,990",
+      "url": "https://www.amazon.in/apple-watch-9",
+      "store": "amazon",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/apple-watch-series-9-select-202309_GEO_US?wid=2000&hei=2000&fmt=jpeg&qlt=90"
+    },
+    {
+      "title": "Watch Series 9 GPS - 41mm Midnight",
+      "price": 42490,
+      "price_display": "₹42,490",
+      "url": "https://www.croma.com/apple-watch-9",
+      "store": "croma",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/apple-watch-series-9-select-202309_GEO_US?wid=2000&hei=2000&fmt=jpeg&qlt=90"
+    },
+    {
+      "title": "Apple Watch Series 9 (GPS, 41mm) Midnight",
+      "price": 43500,
+      "price_display": "₹43,500",
+      "url": "https://www.reliancedigital.in/apple-watch-9",
+      "store": "reliance digital",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/apple-watch-series-9-select-202309_GEO_US?wid=2000&hei=2000&fmt=jpeg&qlt=90"
+    }
+  ],
+  "samsung galaxy watch 6": [
+    {
+      "title": "Samsung Galaxy Watch 6 Classic 43mm Bluetooth - Black",
+      "price": 31999,
+      "price_display": "₹31,999",
+      "url": "https://www.flipkart.com/galaxy-watch-6",
+      "store": "flipkart",
+      "image": "https://m.media-amazon.com/images/I/61ZHXMQdWgL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "Galaxy Watch 6 Classic 43mm Black Bluetooth",
+      "price": 32999,
+      "price_display": "₹32,999",
+      "url": "https://www.amazon.in/galaxy-watch-6",
+      "store": "amazon",
+      "image": "https://m.media-amazon.com/images/I/61ZHXMQdWgL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "Samsung Watch 6 Classic - 43mm Black",
+      "price": 32490,
+      "price_display": "₹32,490",
+      "url": "https://www.croma.com/galaxy-watch-6",
+      "store": "croma",
+      "image": "https://m.media-amazon.com/images/I/61ZHXMQdWgL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "Galaxy Watch 6 Classic (43mm, Black)",
+      "price": 33500,
+      "price_display": "₹33,500",
+      "url": "https://www.reliancedigital.in/galaxy-watch-6",
+      "store": "reliance digital",
+      "image": "https://m.media-amazon.com/images/I/61ZHXMQdWgL._AC_SL1500_.jpg"
+    }
+  ],
+  "ipad air": [
+    {
+      "title": "Apple iPad Air (5th Gen) 64GB Wi-Fi - Starlight",
+      "price": 54900,
+      "price_display": "₹54,900",
+      "url": "https://www.flipkart.com/ipad-air-5",
+      "store": "flipkart",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-air-select-202405?wid=2000&hei=2000&fmt=jpeg&qlt=90"
+    },
+    {
+      "title": "iPad Air 5th Generation 64GB WiFi Starlight",
+      "price": 56990,
+      "price_display": "₹56,990",
+      "url": "https://www.amazon.in/ipad-air-5",
+      "store": "amazon",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-air-select-202405?wid=2000&hei=2000&fmt=jpeg&qlt=90"
+    },
+    {
+      "title": "Apple iPad Air (5th Gen) - 64GB Starlight",
+      "price": 55490,
+      "price_display": "₹55,490",
+      "url": "https://www.croma.com/ipad-air-5",
+      "store": "croma",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-air-select-202405?wid=2000&hei=2000&fmt=jpeg&qlt=90"
+    },
+    {
+      "title": "iPad Air 5th Gen (64GB Wi-Fi) Starlight",
+      "price": 57500,
+      "price_display": "₹57,500",
+      "url": "https://www.reliancedigital.in/ipad-air-5",
+      "store": "reliance digital",
+      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-air-select-202405?wid=2000&hei=2000&fmt=jpeg&qlt=90"
+    }
+  ],
+  "samsung tab s9": [
+    {
+      "title": "Samsung Galaxy Tab S9 11 inch (128GB, Wi-Fi) - Graphite",
+      "price": 64999,
+      "price_display": "₹64,999",
+      "url": "https://www.flipkart.com/galaxy-tab-s9",
+      "store": "flipkart",
+      "image": "https://m.media-amazon.com/images/I/71WSo-wLqQL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "Galaxy Tab S9 11-inch 128GB WiFi Graphite",
+      "price": 66999,
+      "price_display": "₹66,999",
+      "url": "https://www.amazon.in/galaxy-tab-s9",
+      "store": "amazon",
+      "image": "https://m.media-amazon.com/images/I/71WSo-wLqQL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "Samsung Tab S9 - 11 inch 128GB Graphite",
+      "price": 65490,
+      "price_display": "₹65,490",
+      "url": "https://www.croma.com/galaxy-tab-s9",
+      "store": "croma",
+      "image": "https://m.media-amazon.com/images/I/71WSo-wLqQL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "Galaxy Tab S9 (11 inch, 128GB Wi-Fi) Graphite",
+      "price": 67500,
+      "price_display": "₹67,500",
+      "url": "https://www.reliancedigital.in/galaxy-tab-s9",
+      "store": "reliance digital",
+      "image": "https://m.media-amazon.com/images/I/71WSo-wLqQL._AC_SL1500_.jpg"
+    }
+  ],
+  "lg oled tv": [
+    {
+      "title": "LG 55 inch OLED 4K Smart TV (OLED55C3PSA)",
+      "price": 134990,
+      "price_display": "₹1,34,990",
+      "url": "https://www.flipkart.com/lg-oled-55",
+      "store": "flipkart",
+      "image": "https://m.media-amazon.com/images/I/71PKmzHIh7L._AC_SL1500_.jpg"
+    },
+    {
+      "title": "LG 55-inch OLED C3 4K Smart TV 2023 Model",
+      "price": 137990,
+      "price_display": "₹1,37,990",
+      "url": "https://www.amazon.in/lg-oled-55",
+      "store": "amazon",
+      "image": "https://m.media-amazon.com/images/I/71PKmzHIh7L._AC_SL1500_.jpg"
+    },
+    {
+      "title": "LG OLED TV 55 inch 4K C3 Series",
+      "price": 135990,
+      "price_display": "₹1,35,990",
+      "url": "https://www.croma.com/lg-oled-55",
+      "store": "croma",
+      "image": "https://m.media-amazon.com/images/I/71PKmzHIh7L._AC_SL1500_.jpg"
+    },
+    {
+      "title": "LG 55 inch OLED Smart TV C3 Series",
+      "price": 139900,
+      "price_display": "₹1,39,900",
+      "url": "https://www.reliancedigital.in/lg-oled-55",
+      "store": "reliance digital",
+      "image": "https://m.media-amazon.com/images/I/71PKmzHIh7L._AC_SL1500_.jpg"
+    }
+  ],
+  "sony ps5": [
+    {
+      "title": "Sony PlayStation 5 Console (Disc Edition)",
+      "price": 54990,
+      "price_display": "₹54,990",
+      "url": "https://www.flipkart.com/playstation-5",
+      "store": "flipkart",
+      "image": "https://m.media-amazon.com/images/I/51vmyUUO+jL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "PlayStation 5 Disc Version Gaming Console",
+      "price": 54990,
+      "price_display": "₹54,990",
+      "url": "https://www.amazon.in/playstation-5",
+      "store": "amazon",
+      "image": "https://m.media-amazon.com/images/I/51vmyUUO+jL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "Sony PS5 Console with Disc Drive",
+      "price": 54990,
+      "price_display": "₹54,990",
+      "url": "https://www.croma.com/playstation-5",
+      "store": "croma",
+      "image": "https://m.media-amazon.com/images/I/51vmyUUO+jL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "PlayStation 5 (Disc Edition) Console",
+      "price": 54990,
+      "price_display": "₹54,990",
+      "url": "https://www.reliancedigital.in/playstation-5",
+      "store": "reliance digital",
+      "image": "https://m.media-amazon.com/images/I/51vmyUUO+jL._AC_SL1500_.jpg"
+    }
+  ],
+  "canon eos r50": [
+    {
+      "title": "Canon EOS R50 Mirrorless Camera Body (Black)",
+      "price": 59995,
+      "price_display": "₹59,995",
+      "url": "https://www.flipkart.com/canon-eos-r50",
+      "store": "flipkart",
+      "image": "https://m.media-amazon.com/images/I/91aK4U9JzrL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "Canon EOS R50 24.2MP Mirrorless Camera Body",
+      "price": 61990,
+      "price_display": "₹61,990",
+      "url": "https://www.amazon.in/canon-eos-r50",
+      "store": "amazon",
+      "image": "https://m.media-amazon.com/images/I/91aK4U9JzrL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "EOS R50 Mirrorless Camera - Body Only Black",
+      "price": 60490,
+      "price_display": "₹60,490",
+      "url": "https://www.croma.com/canon-eos-r50",
+      "store": "croma",
+      "image": "https://m.media-amazon.com/images/I/91aK4U9JzrL._AC_SL1500_.jpg"
+    },
+    {
+      "title": "Canon EOS R50 Camera Body (Black)",
+      "price": 62500,
+      "price_display": "₹62,500",
+      "url": "https://www.reliancedigital.in/canon-eos-r50",
+      "store": "reliance digital",
+      "image": "https://m.media-amazon.com/images/I/91aK4U9JzrL._AC_SL1500_.jpg"
+    }
+  ],
+  "gopro hero 12": [
+    {
+      "title": "GoPro HERO12 Black Action Camera",
+      "price": 39990,
+      "price_display": "₹39,990",
+      "url": "https://www.flipkart.com/gopro-hero-12",
+      "store": "flipkart",
+      "image": "https://m.media-amazon.com/images/I/61CySGv04AL._AC_SL1000_.jpg"
+    },
+    {
+      "title": "GoPro HERO 12 Black Waterproof Action Camera",
+      "price": 41990,
+      "price_display": "₹41,990",
+      "url": "https://www.amazon.in/gopro-hero-12",
+      "store": "amazon",
+      "image": "https://m.media-amazon.com/images/I/61CySGv04AL._AC_SL1000_.jpg"
+    },
+    {
+      "title": "GoPro HERO12 Black - Action Camera",
+      "price": 40490,
+      "price_display": "₹40,490",
+      "url": "https://www.croma.com/gopro-hero-12",
+      "store": "croma",
+      "image": "https://m.media-amazon.com/images/I/61CySGv04AL._AC_SL1000_.jpg"
+    },
+    {
+      "title": "HERO12 Black Action Camera by GoPro",
+      "price": 42500,
+      "price_display": "₹42,500",
+      "url": "https://www.reliancedigital.in/gopro-hero-12",
+      "store": "reliance digital",
+      "image": "https://m.media-amazon.com/images/I/61CySGv04AL._AC_SL1000_.jpg"
+    }
+  ]
+}

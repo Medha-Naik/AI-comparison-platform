@@ -1,0 +1,208 @@
+"""
+Simple session-based authentication (register/login/logout/me) + Google OAuth
+"""
+from flask import Blueprint, request, jsonify, session, redirect, url_for
+from models import get_db, User, create_tables
+from authlib.integrations.flask_client import OAuth
+import requests
+import os
+
+auth_bp = Blueprint('auth', __name__)
+
+# Ensure tables exist
+create_tables()
+
+# OAuth (Google) setup
+oauth = OAuth()
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
+
+# Debug: Print what we got from environment
+print(f"🔍 DEBUG - GOOGLE_CLIENT_ID: {GOOGLE_CLIENT_ID[:30] if GOOGLE_CLIENT_ID else 'NOT SET'}...")
+print(f"🔍 DEBUG - GOOGLE_CLIENT_SECRET: {'SET' if GOOGLE_CLIENT_SECRET else 'NOT SET'}")
+
+# We'll register provider lazily inside init_app to avoid issues during import
+def init_oauth(app):
+    oauth.init_app(app)
+    if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
+        oauth.register(
+            name='google',
+            client_id=GOOGLE_CLIENT_ID,
+            client_secret=GOOGLE_CLIENT_SECRET,
+            server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+            client_kwargs={
+                'scope': 'openid email profile'
+            }
+        )
+        print(f"✅ Google OAuth configured with Client ID: {GOOGLE_CLIENT_ID[:20]}...")
+    else:
+        print("⚠️  Google OAuth NOT configured - missing GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET")
+
+@auth_bp.route('/auth/register', methods=['POST'])
+def register():
+    db = next(get_db())
+    data = request.get_json() or {}
+    email = (data.get('email') or '').strip().lower()
+    password = data.get('password')
+    name = data.get('name')
+    if not email or not password:
+        return jsonify({"success": False, "message": "Email and password required"}), 400
+    existing = db.query(User).filter(User.email == email).first()
+    if existing:
+        return jsonify({"success": False, "message": "Email already registered"}), 400
+    user = User(email=email, name=name)
+    user.set_password(password)
+    db.add(user)
+    db.commit()
+    session['user_id'] = user.id
+    session['user_email'] = user.email
+    return jsonify({"success": True, "message": "Registered", "user": {"id": user.id, "email": user.email}})
+
+
+@auth_bp.route('/auth/login', methods=['POST'])
+def login():
+    db = next(get_db())
+    data = request.get_json() or {}
+    email = (data.get('email') or '').strip().lower()
+    password = data.get('password')
+    if not email or not password:
+        return jsonify({"success": False, "message": "Email and password required"}), 400
+    user = db.query(User).filter(User.email == email).first()
+    if not user or not user.check_password(password):
+        return jsonify({"success": False, "message": "Invalid credentials"}), 401
+    session['user_id'] = user.id
+    session['user_email'] = user.email
+    return jsonify({"success": True, "message": "Logged in", "user": {"id": user.id, "email": user.email}})
+
+
+@auth_bp.route('/auth/logout', methods=['POST'])
+def logout():
+    session.clear()
+    return jsonify({"success": True, "message": "Logged out"})
+
+
+@auth_bp.route('/auth/me', methods=['GET'])
+def me():
+    uid = session.get('user_id')
+    if not uid:
+        return jsonify({"authenticated": False}), 200
+    return jsonify({"authenticated": True, "user": {"id": uid, "email": session.get('user_email')}})
+
+
+# Google OAuth: start login
+@auth_bp.route('/auth/google', methods=['GET'])
+def auth_google():
+    print("🔥 auth_google() function called!")
+    
+    if 'google' not in oauth._clients:
+        print("❌ Google OAuth not configured")
+        return jsonify({"success": False, "message": "Google OAuth not configured. Set GOOGLE_CLIENT_ID/SECRET."}), 500
+    
+    # Explicitly set the redirect URI to match what's in Google Console
+    redirect_uri = url_for('auth.auth_google_callback', _external=True, _scheme='http')
+    
+    print(f"🔐 Initiating Google OAuth login")
+    print(f"📍 Redirect URI: {redirect_uri}")
+    
+    return oauth.google.authorize_redirect(redirect_uri)
+
+
+# Google OAuth: callback
+@auth_bp.route('/auth/google/callback', methods=['GET'])
+def auth_google_callback():
+    print(f"🔄 Google OAuth callback received")
+    print(f"📦 Request args: {request.args}")
+    
+    if 'google' not in oauth._clients:
+        return jsonify({"success": False, "message": "Google OAuth not configured."}), 500
+    
+    try:
+        token = oauth.google.authorize_access_token()
+        print(f"✅ Token received successfully")
+    except Exception as e:
+        print(f"❌ Error getting token: {e}")
+        return jsonify({"success": False, "message": f"OAuth error: {str(e)}"}), 400
+
+    # Prefer Google's UserInfo endpoint; fallback to ID token parsing, then direct HTTP
+    userinfo = None
+    try:
+        resp = oauth.google.get('userinfo')
+        if resp and hasattr(resp, 'json'):
+            userinfo = resp.json()
+            print(f"👤 User info (userinfo endpoint): {userinfo.get('email')}")
+    except Exception as e:
+        print(f"⚠️  userinfo endpoint failed: {e}")
+
+    if not userinfo:
+        # Try direct HTTP call using access token
+        try:
+            access_token = (token or {}).get('access_token')
+            if access_token:
+                r = requests.get(
+                    'https://openidconnect.googleapis.com/v1/userinfo',
+                    headers={'Authorization': f'Bearer {access_token}'},
+                    timeout=6
+                )
+                if r.ok:
+                    userinfo = r.json()
+                    print(f"👤 User info (direct HTTP): {userinfo.get('email')}")
+        except Exception as e:
+            print(f"⚠️  direct userinfo HTTP failed: {e}")
+
+    if not userinfo:
+        try:
+            userinfo = oauth.google.parse_id_token(token)
+            print(f"👤 User info (id_token): {userinfo.get('email')}")
+        except Exception as e:
+            print(f"❌ Error parsing user info: {e}")
+            return jsonify({"success": False, "message": "Failed to retrieve user info"}), 400
+    
+    if not userinfo:
+        return jsonify({"success": False, "message": "Failed to retrieve user info"}), 400
+
+    # Upsert user by google subject
+    db = next(get_db())
+    google_sub = userinfo.get('sub')
+    email = (userinfo.get('email') or '').lower()
+    name = userinfo.get('name')
+    picture = userinfo.get('picture')
+
+    user = None
+    if email:
+        user = db.query(User).filter(User.email == email).first()
+    
+    if not user:
+        print(f"📝 Creating new user for {email}")
+        user = User(email=email, name=name)
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    else:
+        print(f"✅ Existing user found: {email}")
+
+    # Set session
+    session['user_id'] = user.id
+    session['user_email'] = user.email
+
+    print(f"🎉 Login successful, redirecting to wishlist")
+    
+    # Redirect to wishlist page after login
+    return redirect('/wishlist')
+
+
+# Trailing-slash tolerant aliases (avoid 404 if provider appends a slash)
+@auth_bp.route('/auth/google/', methods=['GET'])
+def auth_google_slash():
+    return auth_google()
+
+
+@auth_bp.route('/auth/google/callback/', methods=['GET'])
+def auth_google_callback_slash():
+    return auth_google_callback()
+
+
+# Test route (at module level, not inside any function!)
+@auth_bp.route('/auth/test', methods=['GET'])
+def test_route():
+    print("🔥 TEST ROUTE HIT!")
+    return "Test route works!"

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Shopping Assistant</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">AI Shopping</div>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search for products..." />
+      <button id="searchBtn" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+
+    <nav class="icons">
+      <a href="#" class="icon" id="wishlistLink" title="Wishlist">
+        <i class="fa-regular fa-heart"></i>
+      </a>
+      <a href="#" class="icon" id="profileLink" title="Profile">
+        <i class="fa-regular fa-user"></i>
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Welcome to Your AI Shopping Assistant</h1>
+    <p>Search and compare products smartly with AI.</p>
+  </main>
+
+  <!-- JS -->
+  <script src="{{ url_for('static', filename='home.js') }}" defer></script>
+</body>
+</html>

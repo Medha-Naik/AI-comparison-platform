@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product - Compare Prices</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='product_list.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <header class="pl-header">
+    <a class="back" href="/results"><i class="fa-solid fa-arrow-left"></i> Back to results</a>
+    <div class="spacer"></div>
+  </header>
+
+  <main class="pl-container">
+    <h1 id="plTitle"></h1>
+    <div class="pl-grid" id="offersGrid"></div>
+  </main>
+
+  <script src="{{ url_for('static', filename='product_list.js') }}"></script>
+</body>
+</html>
+

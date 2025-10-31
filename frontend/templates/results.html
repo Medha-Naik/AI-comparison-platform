@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search Results - AI Shopping Assistant</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='results.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="/">AI Shopping</a>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search for products..." />
+      <button id="searchBtn" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+
+    <nav class="icons">
+      <a href="#" class="icon" id="wishlistLink" title="Wishlist">
+        <i class="fa-regular fa-heart"></i>
+      </a>
+      <a href="/login" class="icon" id="profileLink" title="Login / Signup">
+        <i class="fa-regular fa-user"></i>
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="loading" id="loadingScreen">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <p>Searching for products...</p>
+    </div>
+    
+    <div class="results-container" id="resultsContainer" style="display: none;">
+      <div class="results-header">
+        <a href="/" class="back-btn">
+          <i class="fa-solid fa-arrow-left"></i> Back to Search
+        </a>
+        <div class="search-info">
+          <h1 id="searchTitle"></h1>
+          <p class="result-count" id="resultCount"></p>
+        </div>
+      </div>
+      
+      <div class="filters">
+        <button class="filter-btn active" data-sort="price">
+          <i class="fa-solid fa-sort-numeric-down"></i> Price: Low to High
+        </button>
+        <button class="filter-btn" data-sort="price-desc">
+          <i class="fa-solid fa-sort-numeric-up"></i> Price: High to Low
+        </button>
+        <button class="filter-btn" data-sort="store">
+          <i class="fa-solid fa-store"></i> Sort by Store
+        </button>
+      </div>
+      
+      <div class="products-grid" id="productsGrid">
+        <!-- Products will be loaded here -->
+      </div>
+    </div>
+    
+    <div class="no-results" id="noResults" style="display: none;">
+      <i class="fa-solid fa-search-minus"></i>
+      <h1>No results found</h1>
+      <p id="noResultsMsg"></p>
+      <a href="/" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i> Back to Home
+      </a>
+    </div>
+  </main>
+
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{{ url_for('static', filename='results.js') }}"></script>
+</body>
+</html>
+

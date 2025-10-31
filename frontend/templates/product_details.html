@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Details - AI Shopping Assistant</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='product_details.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <header class="pd-header">
+    <a class="back" href="/product"><i class="fa-solid fa-arrow-left"></i> Back to product</a>
+    <div class="spacer"></div>
+  </header>
+
+  <main class="pd-container">
+    <section class="pd-hero">
+      <div class="pd-image" id="pdImage"></div>
+      <div class="pd-info">
+        <h1 id="pdTitle"></h1>
+        <div class="pd-meta">
+          <span class="pd-store" id="pdStore"></span>
+          <span class="pd-price" id="pdPrice"></span>
+        </div>
+        <a id="pdLink" class="pd-link" target="_blank">View on Store</a>
+      </div>
+    </section>
+
+    <section class="pd-chart">
+      <div class="pd-chart-header">
+        <h2>Price history</h2>
+        <div class="pd-range">
+          <button data-days="7" class="range-btn">7d</button>
+          <button data-days="30" class="range-btn active">30d</button>
+          <button data-days="90" class="range-btn">90d</button>
+        </div>
+      </div>
+      <canvas id="pdChart" height="140"></canvas>
+    </section>
+
+    <section class="pd-reviews">
+      <h2>User reviews</h2>
+      <div id="reviewsList" class="reviews-list"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{{ url_for('static', filename='product_details.js') }}"></script>
+</body>
+</html>
+
