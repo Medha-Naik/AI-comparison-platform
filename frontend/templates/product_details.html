@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Product Details - AI Shopping Assistant</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='product_details.css') }}">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
@@ -15,6 +15,7 @@
   </header>
 
   <main class="pd-container">
+    <!-- Product Hero Section -->
     <section class="pd-hero">
       <div class="pd-image" id="pdImage"></div>
       <div class="pd-info">
@@ -23,25 +24,42 @@
           <span class="pd-store" id="pdStore"></span>
           <span class="pd-price" id="pdPrice"></span>
         </div>
-        <a id="pdLink" class="pd-link" target="_blank">View on Store</a>
+        <a id="pdLink" class="pd-link" target="_blank" rel="noopener noreferrer">
+          <i class="fa-solid fa-external-link"></i> View on Store
+        </a>
       </div>
     </section>
 
-    <section class="pd-chart">
-      <div class="pd-chart-header">
-        <h2>Price history</h2>
-        <div class="pd-range">
-          <button data-days="7" class="range-btn">7d</button>
-          <button data-days="30" class="range-btn active">30d</button>
-          <button data-days="90" class="range-btn">90d</button>
-        </div>
+    <!-- Price Recommendation Section -->
+    <section class="pd-recommendation">
+      <h2 style="margin: 0 0 16px; font-size: 18px;">Buy or Wait Recommendation</h2>
+      <div id="priceRecommendation">
+        <p style="color: #6b7280;">Loading recommendation...</p>
       </div>
-      <canvas id="pdChart" height="140"></canvas>
     </section>
 
+    <!-- Price History Chart -->
+    <!-- Price History Chart -->
+<section class="pd-chart">
+  <div class="pd-chart-header">
+    <h2>30-Day Price History</h2>
+    <div class="pd-range">
+      <button data-days="7" class="range-btn">7d</button>
+      <button data-days="30" class="range-btn active">30d</button>
+      <button data-days="90" class="range-btn">90d</button>
+    </div>
+  </div>
+  <div class="chart-wrapper">
+    <canvas id="pdChart"></canvas>
+  </div>
+</section>
+
+    <!-- User Reviews -->
     <section class="pd-reviews">
-      <h2>User reviews</h2>
-      <div id="reviewsList" class="reviews-list"></div>
+      <h2>User Reviews</h2>
+      <div id="reviewsList" class="reviews-list">
+        <p style="color: #6b7280;">Loading reviews...</p>
+      </div>
     </section>
   </main>
 
@@ -49,4 +67,3 @@
   <script src="{{ url_for('static', filename='product_details.js') }}"></script>
 </body>
 </html>
-

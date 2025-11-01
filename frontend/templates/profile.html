@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile - AI Shopping Assistant</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">AI Shopping</div>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search for products..." />
+      <button id="searchBtn" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+
+    <nav class="icons">
+      <a href="/" class="icon" title="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+      <a href="/wishlist" class="icon" title="Wishlist">
+        <i class="fa-regular fa-heart"></i>
+      </a>
+      <a href="/profile" class="icon active" title="Profile">
+        <i class="fa-solid fa-user"></i>
+      </a>
+    </nav>
+  </header>
+
+  <main class="profile-container">
+    <div class="profile-content">
+      <!-- Profile Header -->
+      <div class="profile-header">
+        <div class="profile-avatar-large">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <h1 id="profileName">Loading...</h1>
+        <p id="profileEmail">Loading...</p>
+      </div>
+
+      <!-- Profile Stats -->
+      <div class="profile-stats">
+        <div class="stat-card">
+          <i class="fa-solid fa-heart"></i>
+          <div class="stat-info">
+            <div class="stat-value" id="wishlistCount">0</div>
+            <div class="stat-label">Wishlist Items</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fa-solid fa-clock"></i>
+          <div class="stat-info">
+            <div class="stat-value" id="memberSince">-</div>
+            <div class="stat-label">Member Since</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Actions -->
+      <div class="profile-actions">
+        <h2>Account</h2>
+        
+        <div class="action-card">
+          <div class="action-icon">
+            <i class="fa-solid fa-user-pen"></i>
+          </div>
+          <div class="action-details">
+            <div class="action-title">Edit Profile</div>
+            <div class="action-description">Update your name and preferences</div>
+          </div>
+          <button class="action-btn" onclick="showEditProfile()">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+
+        <div class="action-card">
+          <div class="action-icon">
+            <i class="fa-solid fa-heart"></i>
+          </div>
+          <div class="action-details">
+            <div class="action-title">My Wishlist</div>
+            <div class="action-description">View and manage your saved products</div>
+          </div>
+          <button class="action-btn" onclick="window.location.href='/wishlist'">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+
+        <div class="action-card danger" onclick="handleLogout()">
+          <div class="action-icon">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </div>
+          <div class="action-details">
+            <div class="action-title">Logout</div>
+            <div class="action-description">Sign out of your account</div>
+          </div>
+          <button class="action-btn">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Edit Profile Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Edit Profile</h2>
+        <button class="close-btn" onclick="closeEditProfile()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="editName">Full Name</label>
+          <input type="text" id="editName" placeholder="Enter your name" />
+        </div>
+        <div class="form-group">
+          <label for="editEmail">Email</label>
+          <input type="email" id="editEmail" placeholder="Enter your email" disabled />
+          <small>Email cannot be changed</small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeEditProfile()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveProfile()">
+          <i class="fa-solid fa-save"></i> Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="{{ url_for('static', filename='profile.js') }}" defer></script>
+</body>
+</html>

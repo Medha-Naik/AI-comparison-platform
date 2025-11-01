@@ -29,8 +29,9 @@
     </div>
 
     <nav class="icons">
-      <a href="/wishlist" class="icon active" id="wishlistLink" title="Wishlist">
-        <i class="fa-solid fa-heart"></i>
+     
+      <a href="/wishlist" class="icon active" title="Wishlist">
+      <i class="fa-solid fa-heart"></i>
       </a>
       <a href="#" class="icon" id="profileLink" title="Profile">
         <i class="fa-regular fa-user"></i>
@@ -46,19 +47,19 @@
           <button id="refreshPricesBtn" class="btn btn-primary">
             <i class="fa-solid fa-sync-alt"></i> Refresh Prices
           </button>
-          <button id="addProductBtn" class="btn btn-secondary">
-            <i class="fa-solid fa-plus"></i> Add Product
-          </button>
+          <!-- REMOVED: Add Product button -->
         </div>
       </div>
 
-      <!-- User Email Input -->
-      <div class="user-email-section" id="userEmailSection">
-        <div class="email-input-container">
-          <label for="userEmail">Enter your email to manage wishlist:</label>
-          <div class="email-input-group">
-            <input type="email" id="userEmail" placeholder="your.email@example.com" required />
-            <button id="loadWishlistBtn" class="btn btn-primary">Load Wishlist</button>
+      <!-- User Email Input - WRAPPED WITH emailInputSection -->
+      <div id="emailInputSection">
+        <div class="user-email-section" id="userEmailSection">
+          <div class="email-input-container">
+            <label for="userEmail">Enter your email to manage wishlist:</label>
+            <div class="email-input-group">
+              <input type="email" id="userEmail" placeholder="your.email@example.com" required />
+              <button id="loadWishlistBtn" class="btn btn-primary">Load Wishlist</button>
+            </div>
           </div>
         </div>
       </div>
@@ -86,62 +87,10 @@
     </div>
   </main>
 
-  <!-- Add Product Modal -->
-  <div class="modal" id="addProductModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Add Product to Wishlist</h2>
-        <button class="close-btn" id="closeModalBtn">&times;</button>
-      </div>
-      <div class="modal-body">
-        <form id="addProductForm">
-          <div class="form-group">
-            <label for="productName">Product Name *</label>
-            <input type="text" id="productName" placeholder="e.g., iPhone 15" required />
-          </div>
-          <div class="form-group">
-            <label for="productCategory">Category (optional)</label>
-            <input type="text" id="productCategory" placeholder="e.g., Smartphones" />
-          </div>
-          <div class="form-group">
-            <label for="targetPrice">Target Price (optional)</label>
-            <input type="number" id="targetPrice" placeholder="e.g., 75000" step="0.01" />
-            <small>We'll notify you when the price drops to this amount</small>
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn btn-secondary" id="cancelAddBtn">Cancel</button>
-            <button type="submit" class="btn btn-primary">Add to Wishlist</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Price History Modal -->
-  <div class="modal" id="priceHistoryModal">
-    <div class="modal-content large">
-      <div class="modal-header">
-        <h2 id="priceHistoryTitle">Price History</h2>
-        <button class="close-btn" id="closePriceModalBtn">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="price-chart-container">
-          <canvas id="priceChart"></canvas>
-        </div>
-        <div class="price-stats" id="priceStats">
-          <!-- Price statistics will be loaded here -->
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- REMOVED: Add Product Modal -->
+  <!-- REMOVED: Price History Modal -->
 
   <!-- JS -->
   <script src="{{ url_for('static', filename='wishlist.js') }}"></script>
 </body>
 </html>
-
-
-
-
-
-

@@ -3,10 +3,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchBtn = document.getElementById("searchBtn");
   const searchInput = document.getElementById("searchInput");
   const wishlistLink = document.getElementById("wishlistLink");
+  const profileLink = document.getElementById("profileLink");
   
   // Get search query from URL
   const urlParams = new URLSearchParams(window.location.search);
   const query = urlParams.get('q');
+  
+  // Store query in localStorage for back navigation from product details
+  if (query) {
+    localStorage.setItem('lastSearchQuery', query);
+    localStorage.setItem('lastSearchUrl', window.location.href);
+  }
   
   if (query) {
     // Set search input value
@@ -45,18 +52,34 @@ document.addEventListener("DOMContentLoaded", () => {
       const me = await meRes.json();
       
       if (me.authenticated) {
-        // User is logged in, go to wishlist
         window.location.href = '/wishlist';
       } else {
-        // User is not logged in, go to login page with next parameter
         window.location.href = '/login?next=' + encodeURIComponent('/wishlist');
       }
     } catch (error) {
       console.error('Error checking authentication:', error);
-      // On error, redirect to login
       window.location.href = '/login';
     }
   });
+  
+  // Handle profile icon click
+  if (profileLink) {
+    profileLink.addEventListener('click', async (e) => {
+      e.preventDefault();
+      try {
+        const meRes = await fetch('/auth/me');
+        const me = await meRes.json();
+        
+        if (me.authenticated) {
+          window.location.href = '/profile';
+        } else {
+          window.location.href = '/login?next=' + encodeURIComponent('/profile');
+        }
+      } catch (error) {
+        window.location.href = '/login';
+      }
+    });
+  }
   
   // Fetch and display results
   async function fetchAndDisplayResults(query) {
@@ -111,6 +134,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let html = "";
     
     offers.forEach(offer => {
+      // Build URL for product details page
+      const detailsUrl = `/product-details?key=${encodeURIComponent(offer.offer_key || '')}&title=${encodeURIComponent(offer.title || '')}&store=${encodeURIComponent(offer.store || '')}&price_display=${encodeURIComponent(offer.price_display || '')}&image=${encodeURIComponent(offer.image || '')}&url=${encodeURIComponent(offer.url || '')}`;
+      
       html += `
         <div class="product-card">
           <div class="product-image">
@@ -126,9 +152,9 @@ document.addEventListener("DOMContentLoaded", () => {
               <span class="price">${offer.price_display}</span>
             </div>
             <div class="product-actions">
-              <a class="view-product-btn" href="${offer.url}" target="_blank" rel="noopener noreferrer">
-                View Product
-              </a>
+              <button class="view-product-btn" onclick="window.location.href='${detailsUrl}'">
+                View Details
+              </button>
               <button class="wishlist-btn" onclick="addToWishlist('${offer.title.replace(/'/g, "\\'")}', '${offer.store}')" title="Add to Wishlist">
                 <i class="fa-regular fa-heart"></i>
               </button>
@@ -265,4 +291,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 3000);
   }
 });
-

@@ -1,8 +1,8 @@
-// Home Page JavaScript
 document.addEventListener("DOMContentLoaded", () => {
   const searchBtn = document.getElementById("searchBtn");
   const searchInput = document.getElementById("searchInput");
   const wishlistLink = document.getElementById("wishlistLink");
+  const profileIcon = document.getElementById("profileIcon");
   
   // Handle search button click
   searchBtn.addEventListener("click", performSearch);
@@ -28,6 +28,28 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         // User is not logged in, go to login page with next parameter
         window.location.href = '/login?next=' + encodeURIComponent('/wishlist');
+      }
+    } catch (error) {
+      console.error('Error checking authentication:', error);
+      // On error, redirect to login
+      window.location.href = '/login';
+    }
+  });
+  
+  // Handle profile icon click - go to profile page
+  profileIcon.addEventListener("click", async (e) => {
+    e.preventDefault();
+    
+    try {
+      const meRes = await fetch('/auth/me');
+      const me = await meRes.json();
+      
+      if (me.authenticated) {
+        // User is logged in, go to profile page
+        window.location.href = '/profile';
+      } else {
+        // User is not logged in, go to login page with next parameter
+        window.location.href = '/login?next=' + encodeURIComponent('/profile');
       }
     } catch (error) {
       console.error('Error checking authentication:', error);
