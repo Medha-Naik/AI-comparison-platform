@@ -20,20 +20,20 @@ create_tables()
 def add_to_wishlist():
     """Add a product to wishlist"""
     try:
+        # Require session auth FIRST
+        if not session.get('user_id'):
+            return jsonify({"success": False, "message": "Authentication required"}), 401
+        
         data = request.get_json()
         
         if not data:
             return jsonify({"success": False, "message": "No data provided"}), 400
         
-        required_fields = ['user_email', 'product_name']
-        for field in required_fields:
-            if field not in data:
-                return jsonify({"success": False, "message": f"Missing required field: {field}"}), 400
-        
-        # Require session auth
-        if not session.get('user_id'):
-            return jsonify({"success": False, "message": "Authentication required"}), 401
+        # Only product_name is required now (email comes from session)
+        if 'product_name' not in data:
+            return jsonify({"success": False, "message": "Missing required field: product_name"}), 400
 
+        # Use email from session (not from request body)
         result = wishlist_service.add_to_wishlist(
             user_email=session.get('user_email'),
             product_name=data['product_name'],
@@ -176,4 +176,78 @@ def check_in_wishlist(user_email, product_name):
         
     except Exception as e:
         return jsonify({"success": False, "message": f"Server error: {str(e)}"}), 500
-
+    
+@wishlist_bp.route('/wishlist/details/<int:wishlist_item_id>', methods=['GET'])
+def get_wishlist_item_details(wishlist_item_id):
+    """Get detailed information and price history for a wishlist item"""
+    try:
+        if not session.get('user_id'):
+            return jsonify({"success": False, "message": "Authentication required"}), 401
+        
+        from models import get_db, WishlistItem, PriceHistory
+        from datetime import datetime, timedelta
+        
+        db = next(get_db())
+        
+        # Get wishlist item
+        item = db.query(WishlistItem).filter(
+            WishlistItem.id == wishlist_item_id,
+            WishlistItem.user_id == session.get('user_id')
+        ).first()
+        
+        if not item:
+            return jsonify({"success": False, "message": "Wishlist item not found"}), 404
+        
+        # Get price history for last 30 days
+        thirty_days_ago = datetime.utcnow() - timedelta(days=30)
+        price_history = db.query(PriceHistory).filter(
+            PriceHistory.wishlist_item_id == wishlist_item_id,
+            PriceHistory.recorded_at >= thirty_days_ago
+        ).order_by(PriceHistory.recorded_at.asc()).all()
+        
+        # Group by store
+        history_by_store = {}
+        current_prices = {}
+        
+        for record in price_history:
+            store = record.store
+            if store not in history_by_store:
+                history_by_store[store] = []
+            
+            history_by_store[store].append({
+                'date': record.recorded_at.strftime('%Y-%m-%d'),
+                'price': record.price,
+                'price_display': record.price_display,
+                'url': record.product_url
+            })
+            
+            # Keep track of latest price for each store
+            current_prices[store] = {
+                'price': record.price,
+                'price_display': record.price_display,
+                'url': record.product_url,
+                'title': record.product_title,
+                'image': record.product_image
+            }
+        
+        # Calculate lowest price
+        lowest_price = min(current_prices.values(), key=lambda x: x['price'])['price'] if current_prices else None
+        
+        return jsonify({
+            "success": True,
+            "item": {
+                "id": item.id,
+                "product_name": item.product_name,
+                "product_category": item.product_category,
+                "target_price": item.target_price,
+                "created_at": item.created_at.strftime('%Y-%m-%d')
+            },
+            "current_prices": current_prices,
+            "price_history": history_by_store,
+            "lowest_price": lowest_price
+        }), 200
+        
+    except Exception as e:
+        import traceback
+        print(f"Error getting wishlist item details: {traceback.format_exc()}")
+        return jsonify({"success": False, "message": f"Server error: {str(e)}"}), 500

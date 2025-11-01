@@ -65,11 +65,30 @@ def login():
     data = request.get_json() or {}
     email = (data.get('email') or '').strip().lower()
     password = data.get('password')
+    
     if not email or not password:
         return jsonify({"success": False, "message": "Email and password required"}), 400
+    
     user = db.query(User).filter(User.email == email).first()
-    if not user or not user.check_password(password):
-        return jsonify({"success": False, "message": "Invalid credentials"}), 401
+    
+    # Check if user exists
+    if not user:
+        return jsonify({
+            "success": False,
+            "message": "No account found with this email. Please sign up first.",
+            "error_type": "user_not_found",
+            "redirect": "signup"
+        }), 404
+    
+    # Check password
+    if not user.check_password(password):
+        return jsonify({
+            "success": False, 
+            "message": "Invalid password. Please try again.",
+            "error_type": "wrong_password"
+        }), 401
+    
+    # Login successful
     session['user_id'] = user.id
     session['user_email'] = user.email
     return jsonify({"success": True, "message": "Logged in", "user": {"id": user.id, "email": user.email}})

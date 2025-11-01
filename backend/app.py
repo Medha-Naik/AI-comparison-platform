@@ -139,6 +139,20 @@ def search():
         "errors": result['errors']
     })
 
+@app.route('/profile')
+def profile():
+    """Serve the profile page"""
+    if not session.get('user_id'):
+        return redirect(url_for('login_page', next='/profile'))
+    return render_template('profile.html')
+
+@app.route('/wishlist/details/<int:item_id>')
+def wishlist_item_detail(item_id):
+    """Serve the wishlist item detail page"""
+    if not session.get('user_id'):
+        return redirect(url_for('login_page'))
+    return render_template('wishlist_item_detail.html', item_id=item_id)
+
 @app.route('/price-history')
 def price_history():
     """Return price history for a given offer key.
