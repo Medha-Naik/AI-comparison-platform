@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   
-  function displayResults(offers, query) {
+  async function displayResults(offers, query) {
     const loadingScreen = document.getElementById("loadingScreen");
     const resultsContainer = document.getElementById("resultsContainer");
     const searchTitle = document.getElementById("searchTitle");
@@ -172,11 +172,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const heartClass = isInWishlist ? 'fa-solid' : 'fa-regular';
       const heartTitle = isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist';
       
+      // Fix image path - use static images folder
+      const imagePath = offer.image ? (offer.image.startsWith('http') ? offer.image : `/images/${offer.image}`) : null;
+      
       html += `
         <div class="product-card" data-product-index="${index}">
           <div class="product-image">
-            ${offer.image ? 
-              `<img src="${offer.image}" alt="${offer.title}" loading="lazy" />` : 
+            ${imagePath ? 
+              `<img src="${imagePath}" alt="${offer.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'no-image\\'>No Image</div>'" />` : 
               '<div class="no-image">No Image</div>'
             }
           </div>

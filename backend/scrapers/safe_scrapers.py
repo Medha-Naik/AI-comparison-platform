@@ -1,23 +1,62 @@
-from scrapers.girias import search_offers as girias_real
+# LAZY IMPORTS: Only import scrapers if needed (for performance)
+# Since all scrapers are disabled, we don't need to import them
 import sys
 import os
+import time
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from scrapers.flipkart import search_offers as flipkart_real
-from scrapers.reliance_digital import search_offers as reliance_real
-# from scrapers.amazon_playwright import search_offers as amazon_real  # Use this if you have Playwright
 from data.mock_data import search_mock_offers
-import time
+
+# Lazy import scrapers only when actually needed
+_girias_real = None
+_flipkart_real = None
+_reliance_real = None
+
+def _get_girias_scraper():
+    """Lazy load girias scraper only when needed"""
+    global _girias_real
+    if _girias_real is None:
+        try:
+            from scrapers.girias import search_offers as girias_real
+            _girias_real = girias_real
+        except ImportError:
+            _girias_real = False  # Mark as unavailable
+    return _girias_real if _girias_real else None
+
+def _get_flipkart_scraper():
+    """Lazy load flipkart scraper only when needed"""
+    global _flipkart_real
+    if _flipkart_real is None:
+        try:
+            from scrapers.flipkart import search_offers as flipkart_real
+            _flipkart_real = flipkart_real
+        except ImportError:
+            _flipkart_real = False
+    return _flipkart_real if _flipkart_real else None
+
+def _get_reliance_scraper():
+    """Lazy load reliance scraper only when needed"""
+    global _reliance_real
+    if _reliance_real is None:
+        try:
+            from scrapers.reliance_digital import search_offers as reliance_real
+            _reliance_real = reliance_real
+        except ImportError:
+            _reliance_real = False
+    return _reliance_real if _reliance_real else None
 
 # Configuration - Enable real scrapers for specific stores via env flags
 # WARNING: Real scrapers can get blocked! Use mock data for reliable demos.
+# STATIC DATA MODE: All scrapers disabled - using only static JSON files
 REAL_SCRAPERS_CONFIG = {
-    'flipkart': os.getenv('REAL_SCRAPER_FLIPKART', 'false').lower() in ('1', 'true', 'yes'),
-    'reliance digital': os.getenv('REAL_SCRAPER_RELIANCE', 'false').lower() in ('1', 'true', 'yes'),
-    'amazon': os.getenv('REAL_SCRAPER_AMAZON', 'false').lower() in ('1', 'true', 'yes')
+    'flipkart': False,  # DISABLED - using static data only
+    'reliance digital': False,  # DISABLED - using static data only
+    'amazon': False,  # DISABLED - using static data only
+    'girias': False  # DISABLED - using static data only
 }
 
-# To enable real scrapers (risky):
+# To enable real scrapers (risky - currently disabled for static data mode):
 # Set env vars REAL_SCRAPER_FLIPKART/RELIANCE/AMAZON to true/1/yes
 # Be aware you may get blocked, rate-limited, or CAPTCHAs
 
@@ -25,7 +64,7 @@ FALLBACK_TO_MOCK = os.getenv('FALLBACK_TO_MOCK', 'true').lower() in ('1', 'true'
 
 def search_with_fallback(query, stores=None):
     """
-    Smart scraper with fallback to mock data
+    Smart scraper with fallback to mock data - OPTIMIZED VERSION
     
     Perfect for academic demos - always works!
     
@@ -39,117 +78,126 @@ def search_with_fallback(query, stores=None):
     if stores is None:
         stores = ['flipkart', 'amazon', 'reliance digital', 'croma', 'girias']
     
+    start_time = time.time()
+    
+    # OPTIMIZATION: Since all scrapers are disabled, just load all products once
+    # and filter in a single pass instead of multiple calls
+    if all(not REAL_SCRAPERS_CONFIG.get(store.lower(), False) for store in stores):
+        # All stores use mock data - optimize by doing ONE search for all stores
+        from data.mock_data import search_mock_offers
+        all_offers = search_mock_offers(query, stores)
+        
+        # Build sources dict
+        sources = {}
+        for offer in all_offers:
+            store = offer.get('store', '').lower()
+            if store not in sources:
+                sources[store] = 'mock'
+        
+        elapsed = time.time() - start_time
+        return {
+            'offers': all_offers,
+            'sources': sources,
+            'errors': None,
+            'time_taken': round(elapsed, 2),
+            'query': query
+        }
+    
+    # Fallback to original logic if any real scrapers are enabled
     all_offers = []
     sources = {}  # Track which data source was used
     errors = []
-    
-    start_time = time.time()
     
     # Try Flipkart
     if 'flipkart' in stores:
         if REAL_SCRAPERS_CONFIG.get('flipkart', False):
             try:
-                print(f"[SafeScraper] Trying real Flipkart scraper...")
-                flipkart_offers = flipkart_real(query)
-                
-                if len(flipkart_offers) > 0:
-                    all_offers.extend(flipkart_offers)
-                    sources['flipkart'] = 'real'
-                    print(f"[SafeScraper] ✅ Flipkart REAL: {len(flipkart_offers)} products")
+                flipkart_fn = _get_flipkart_scraper()
+                if flipkart_fn:
+                    flipkart_offers = flipkart_fn(query)
+                    if len(flipkart_offers) > 0:
+                        all_offers.extend(flipkart_offers)
+                        sources['flipkart'] = 'real'
                 else:
-                    raise Exception("No products returned")
-                    
+                    raise Exception("Flipkart scraper not available")
             except Exception as e:
-                print(f"[SafeScraper] ⚠️  Flipkart scraper failed: {e}")
                 errors.append(f"Flipkart: {str(e)}")
-                
                 if FALLBACK_TO_MOCK:
                     mock_flipkart = search_mock_offers(query, ['flipkart'])
                     all_offers.extend(mock_flipkart)
                     sources['flipkart'] = 'mock'
-                    print(f"[SafeScraper] 🔄 Flipkart FALLBACK: {len(mock_flipkart)} products")
         else:
-            # Always use mock
             mock_flipkart = search_mock_offers(query, ['flipkart'])
             all_offers.extend(mock_flipkart)
             sources['flipkart'] = 'mock'
-            print(f"[SafeScraper] 📋 Flipkart MOCK: {len(mock_flipkart)} products")
     
-    # Try Amazon (similar logic)
+    # Try Amazon
     if 'amazon' in stores:
         if REAL_SCRAPERS_CONFIG.get('amazon', False):
             try:
-                print(f"[SafeScraper] Trying real Amazon scraper...")
-                # If you have amazon scraper working:
-                # amazon_offers = amazon_real(query)
-                # For now, raise exception to use mock
-                raise Exception("Amazon scraper not available (demo mode)")
-                
+                raise Exception("Amazon scraper not available")
             except Exception as e:
-                print(f"[SafeScraper] ⚠️  Amazon scraper failed: {e}")
                 errors.append(f"Amazon: {str(e)}")
-                
                 if FALLBACK_TO_MOCK:
                     mock_amazon = search_mock_offers(query, ['amazon'])
                     all_offers.extend(mock_amazon)
                     sources['amazon'] = 'mock'
-                    print(f"[SafeScraper] 🔄 Amazon FALLBACK: {len(mock_amazon)} products")
         else:
             mock_amazon = search_mock_offers(query, ['amazon'])
             all_offers.extend(mock_amazon)
             sources['amazon'] = 'mock'
-            print(f"[SafeScraper] 📋 Amazon MOCK: {len(mock_amazon)} products")
     
-    # Croma - Always use mock data
+    # Croma
     if 'croma' in stores:
         mock_croma = search_mock_offers(query, ['croma'])
         all_offers.extend(mock_croma)
         sources['croma'] = 'mock'
-        print(f"[SafeScraper] 📋 Croma MOCK: {len(mock_croma)} products")
     
-    # Try Reliance Digital
+    # Reliance Digital
     if 'reliance digital' in stores:
         if REAL_SCRAPERS_CONFIG.get('reliance digital', False):
             try:
-                print(f"[SafeScraper] Trying real Reliance Digital scraper...")
-                reliance_offers = reliance_real(query)
-                
-                if len(reliance_offers) > 0:
-                    all_offers.extend(reliance_offers)
-                    sources['reliance digital'] = 'real'
-                    print(f"[SafeScraper] ✅ Reliance Digital REAL: {len(reliance_offers)} products")
+                reliance_fn = _get_reliance_scraper()
+                if reliance_fn:
+                    reliance_offers = reliance_fn(query)
+                    if len(reliance_offers) > 0:
+                        all_offers.extend(reliance_offers)
+                        sources['reliance digital'] = 'real'
                 else:
-                    raise Exception("No products returned")
-                    
+                    raise Exception("Reliance scraper not available")
             except Exception as e:
-                print(f"[SafeScraper] ⚠️  Reliance Digital scraper failed: {e}")
                 errors.append(f"Reliance Digital: {str(e)}")
-                
                 if FALLBACK_TO_MOCK:
                     mock_reliance = search_mock_offers(query, ['reliance digital'])
                     all_offers.extend(mock_reliance)
                     sources['reliance digital'] = 'mock'
-                    print(f"[SafeScraper] 🔄 Reliance Digital FALLBACK: {len(mock_reliance)} products")
         else:
             mock_reliance = search_mock_offers(query, ['reliance digital'])
             all_offers.extend(mock_reliance)
             sources['reliance digital'] = 'mock'
-            print(f"[SafeScraper] 📋 Reliance Digital MOCK: {len(mock_reliance)} products")
 
-    # Try Girias (fast Playwright scraper)
+    # Girias
     if 'girias' in stores:
-        try:
-            print(f"[SafeScraper] Trying real Girias scraper...")
-            girias_offers = girias_real(query)
-            if len(girias_offers) > 0:
-                all_offers.extend(girias_offers)
-                sources['girias'] = 'real'
-                print(f"[SafeScraper] ✅ Girias REAL: {len(girias_offers)} products")
-            else:
-                print(f"[SafeScraper] ⚠️  Girias returned no products")
-        except Exception as e:
-            print(f"[SafeScraper] ⚠️  Girias scraper failed: {e}")
-            errors.append(f"Girias: {str(e)}")
+        if REAL_SCRAPERS_CONFIG.get('girias', False):
+            try:
+                girias_fn = _get_girias_scraper()
+                if girias_fn:
+                    girias_offers = girias_fn(query)
+                    if len(girias_offers) > 0:
+                        all_offers.extend(girias_offers)
+                        sources['girias'] = 'real'
+                else:
+                    raise Exception("Girias scraper not available")
+            except Exception as e:
+                errors.append(f"Girias: {str(e)}")
+                if FALLBACK_TO_MOCK:
+                    mock_girias = search_mock_offers(query, ['girias'])
+                    all_offers.extend(mock_girias)
+                    sources['girias'] = 'mock'
+        else:
+            mock_girias = search_mock_offers(query, ['girias'])
+            all_offers.extend(mock_girias)
+            sources['girias'] = 'mock'
     
     elapsed = time.time() - start_time
     

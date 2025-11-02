@@ -101,12 +101,8 @@ def search():
     if not query:
         return jsonify({"error": "Missing query parameter 'q'"}), 400
     
-    print(f"\n{'='*60}")
-    print(f"[API] Academic Demo Mode")
-    print(f"[API] Query: '{query}'")
-    if store_filter:
-        print(f"[API] Store Filter: {store_filter}")
-    print(f"{'='*60}\n")
+    # Reduced logging for better performance (can enable for debugging)
+    # print(f"[API] Query: '{query}'")
     
     
     stores = None
@@ -116,23 +112,24 @@ def search():
    
     result = search_with_fallback(query, stores)
     
-    
-    # Attach tracking keys and record today's price per offer
+    # ULTRA-FAST PATH: Generate keys without loading any price history files
+    # Just create keys from offer data - no file I/O at all
     for offer in result['offers']:
         try:
-            key = record_price(offer, offer.get('price'))
-            offer['offer_key'] = key
-        except Exception as e:
-            # Non-fatal; continue without key
+            # Generate key directly without importing anything that loads files
+            store = (offer.get('store') or '').strip().lower()
+            url = (offer.get('url') or '').strip()
+            title = (offer.get('title') or '').strip().lower()
+            base = url if url else title
+            offer['offer_key'] = f"{store}|{base}" if base else None
+        except Exception:
             offer['offer_key'] = None
 
-    result['offers'].sort(key=lambda x: x['price'])
+    # Sort by price
+    result['offers'].sort(key=lambda x: x.get('price', 0))
     
-    print(f"\n{'='*60}")
-    print(f"[API] Completed in {result['time_taken']}s")
-    print(f"[API] Total offers: {len(result['offers'])}")
-    print(f"[API] Data sources: {result['sources']}")
-    print(f"{'='*60}\n")
+    # Reduced logging (can enable for debugging)
+    # print(f"[API] Completed in {result['time_taken']}s, Found {len(result['offers'])} offers")
     
     return jsonify({
         "query": result['query'],
@@ -174,7 +171,13 @@ def price_history():
     if not key:
         return jsonify({"error": "Missing 'key' (or store+url/title)"}), 400
 
-    history = get_history(key)
+    # Build offer dict from params to help with static format lookup
+    offer_dict = {
+        'store': request.args.get('store'),
+        'url': request.args.get('url'),
+        'title': request.args.get('title')
+    }
+    history = get_history(key, offer_dict if any(offer_dict.values()) else None)
 
     # Optional filter: days=N (e.g., 30)
     days_param = request.args.get('days')
@@ -226,6 +229,35 @@ def list_products():
         "total": len(products)
     })
 
+@app.route('/images/<path:filename>')
+def serve_image(filename):
+    """Serve product images from backend/data directory"""
+    from flask import send_from_directory
+    import os
+    from urllib.parse import unquote
+    
+    # Images are stored in backend/data directory
+    data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
+    
+    # Decode URL-encoded filename (handles spaces like "Dell 15DC15250.jpg")
+    decoded_filename = unquote(filename)
+    
+    # Try to find the file (case-insensitive for Windows)
+    # First try exact match
+    file_path = os.path.join(data_dir, decoded_filename)
+    if os.path.exists(file_path):
+        return send_from_directory(data_dir, decoded_filename)
+    
+    # If not found, try case-insensitive search (for Windows compatibility)
+    if os.name == 'nt':  # Windows
+        for actual_file in os.listdir(data_dir):
+            if actual_file.lower() == decoded_filename.lower() and os.path.isfile(os.path.join(data_dir, actual_file)):
+                return send_from_directory(data_dir, actual_file)
+    
+    # If still not found, return 404
+    from flask import abort
+    abort(404)
+
 if __name__ == '__main__':
     print("\n" + "="*60)
     print("🎓 AI Shopping Assistant - Academic Demo Mode")
@@ -236,4 +268,7 @@ if __name__ == '__main__':
     print("📍 Health: http://127.0.0.1:5000/health")
     print("="*60 + "\n")
     
-    app.run(debug=True, port=5000)
+    # Disable debug mode for production/performance
+    # Set debug=False or use environment variable
+    debug_mode = os.getenv('FLASK_DEBUG', 'false').lower() in ('1', 'true', 'yes')
+    app.run(debug=debug_mode, port=5000)

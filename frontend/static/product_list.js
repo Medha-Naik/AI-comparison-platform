@@ -17,9 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
     grid.innerHTML = offers.map((o, index) => {
       const detailsUrl = `/product-details?key=${encodeURIComponent(o.offer_key || '')}&title=${encodeURIComponent(o.title || '')}&store=${encodeURIComponent(o.store || '')}&price_display=${encodeURIComponent(o.price_display || '')}&image=${encodeURIComponent(o.image || '')}&url=${encodeURIComponent(o.url || '')}`;
       
+      // Fix image path - use static images folder
+      const imagePath = o.image ? (o.image.startsWith('http') ? o.image : `/images/${o.image}`) : null;
+      
       return `
       <div class="pl-card" data-index="${index}">
-        <div class="img">${o.image ? `<img src="${o.image}" alt="${escapeHtml(o.title)}" loading="lazy"/>` : 'No Image'}</div>
+        <div class="img">${imagePath ? `<img src="${imagePath}" alt="${escapeHtml(o.title)}" loading="lazy" onerror="this.parentElement.innerHTML='No Image'"/>` : 'No Image'}</div>
         <div class="body">
           <div class="title">${escapeHtml(o.title)}</div>
           <div class="meta">

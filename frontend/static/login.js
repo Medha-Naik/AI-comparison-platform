@@ -7,6 +7,32 @@ document.addEventListener('DOMContentLoaded', () => {
   const pageTitle = document.getElementById('pageTitle');
   const pageSubtitle = document.getElementById('pageSubtitle');
   const nameGroup = document.getElementById('nameGroup');
+  const googleOAuthDiv = document.getElementById('googleOAuthDiv');
+  const googleOAuthBtn = document.getElementById('googleOAuthBtn');
+  
+  // Handle Google OAuth button click with error handling
+  if (googleOAuthBtn) {
+    googleOAuthBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      
+      try {
+        // Check if OAuth is configured before redirecting
+        const res = await fetch('/auth/config');
+        const data = await res.json();
+        
+        if (!data.google_oauth_enabled) {
+          showError('Google OAuth is not configured. Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables. See GOOGLE_OAUTH_SETUP.md for instructions.');
+          return;
+        }
+        
+        // OAuth is configured, proceed with redirect
+        window.location.href = '/auth/google';
+      } catch (error) {
+        // If config endpoint fails, try anyway - backend will handle error
+        window.location.href = '/auth/google';
+      }
+    });
+  }
 
   // Get the next URL parameter for redirect after login
   const urlParams = new URLSearchParams(window.location.search);

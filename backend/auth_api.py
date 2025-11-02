@@ -116,6 +116,14 @@ def me():
         return jsonify({"authenticated": False}), 200
     return jsonify({"authenticated": True, "user": {"id": uid, "email": session.get('user_email')}})
 
+@auth_bp.route('/auth/config', methods=['GET'])
+def auth_config():
+    """Check if Google OAuth is configured"""
+    google_oauth_enabled = 'google' in oauth._clients if hasattr(oauth, '_clients') else False
+    return jsonify({
+        "google_oauth_enabled": google_oauth_enabled
+    })
+
 
 # Google OAuth: start login
 @auth_bp.route('/auth/google', methods=['GET'])
@@ -124,7 +132,45 @@ def auth_google():
     
     if 'google' not in oauth._clients:
         print("❌ Google OAuth not configured")
-        return jsonify({"success": False, "message": "Google OAuth not configured. Set GOOGLE_CLIENT_ID/SECRET."}), 500
+        from flask import render_template_string
+        error_html = """
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Google OAuth Not Configured</title>
+            <style>
+                body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+                h1 { color: #d32f2f; }
+                code { background: #f5f5f5; padding: 2px 6px; border-radius: 3px; }
+                pre { background: #f5f5f5; padding: 15px; border-radius: 5px; overflow-x: auto; }
+                a { color: #1976d2; text-decoration: none; }
+                a:hover { text-decoration: underline; }
+            </style>
+        </head>
+        <body>
+            <h1>⚠️ Google OAuth Not Configured</h1>
+            <p>To enable Google OAuth login, you need to configure your Google OAuth credentials.</p>
+            
+            <h2>Quick Setup:</h2>
+            <ol>
+                <li>Create a <code>.env</code> file in the <code>backend</code> directory</li>
+                <li>Add these lines:
+                    <pre>GOOGLE_CLIENT_ID=your-client-id-here.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-client-secret-here</pre>
+                </li>
+                <li>Restart your Flask server</li>
+            </ol>
+            
+            <h2>Detailed Instructions:</h2>
+            <p>See <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a> to create OAuth credentials.</p>
+            <p>For step-by-step instructions, check <code>GOOGLE_OAUTH_SETUP.md</code> in your project root.</p>
+            
+            <hr>
+            <p><a href="/login">← Back to Login</a> | <a href="/">Go to Home</a></p>
+        </body>
+        </html>
+        """
+        return render_template_string(error_html), 500
     
     # Explicitly set the redirect URI to match what's in Google Console
     redirect_uri = url_for('auth.auth_google_callback', _external=True, _scheme='http')

@@ -246,10 +246,15 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const imgWrap = document.getElementById('pdImage');
   if (image) {
+    // Fix image path - use static images folder
+    const imagePath = image.startsWith('http') ? image : `/images/${image}`;
     const img = document.createElement('img');
-    img.src = image;
+    img.src = imagePath;
     img.alt = title;
     img.loading = 'lazy';
+    img.onerror = () => {
+      imgWrap.innerHTML = '<div class="no-image">No Image</div>';
+    };
     imgWrap.appendChild(img);
   } else {
     imgWrap.textContent = 'No Image';

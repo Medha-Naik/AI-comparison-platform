@@ -1,38 +1,40 @@
 {
-  "iphone 15": [
+ "iphone 15": [
     {
       "title": "Apple iPhone 15 (128 GB) - Blue",
-      "price": 69900,
-      "price_display": "₹69,900",
-      "url": "https://www.flipkart.com/apple-iphone-15-blue-128gb",
+      "price": 59900,
+      "price_display": "₹59,900",
+      "url": "https://www.flipkart.com/apple-iphone-15-blue-128-gb/p/itmbf14ef54f645d?pid=MOBGTAGPAQNVFZZY&lid=LSTMOBGTAGPAQNVFZZYCQQXYH&marketplace=FLIPKART&q=iphone+15+blue+128&store=tyy%2F4io&srno=s_1_1&otracker=search&otracker1=search&fm=organic&iid=7cd01460-70b2-4853-a8a4-1bc1318f5d37.MOBGTAGPAQNVFZZY.SEARCH&ppt=hp&ppn=homepage&ssid=75e0enqgkw0000001762059944210&qH=6432ef9c4ba1adf2",
       "store": "flipkart",
-      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-blue?wid=2560&hei=2560&fmt=p-jpg&qlt=80"
+      "image": "iphone15.jpg.webp"
     },
     {
       "title": "Apple iPhone 15 128GB Blue",
-      "price": 71999,
-      "price_display": "₹71,999",
-      "url": "https://www.amazon.in/apple-iphone-15-128gb",
+      "price": 61999,
+      "price_display": "₹61,999",
+      "url": "https://www.amazon.in/Apple-iPhone-15-128-GB/dp/B0CHX2F5QT/ref=sr_1_1_sspa?crid=LE07Z1M6JBI5&dib=eyJ2IjoiMSJ9.8-aKrERwPzdGyJWfWOa56A0XEGm7QRpP2kpgjBvQ_dovQXJzMW4nGZMrpNVGmuLdcfXyNYzC5yynnDU0kHHgVRNOzmPqxNmhXBHLNGUNWh00hxpO6_KBgj9Vr4Arxj3vqZTaqz-EXQsBBw051kziIdEUZTgUuIzsX9rVDNehXv-NNGQPE1v-S9qxlmWAkw46VOt79AzF2c3kASVstq7O8K_R7Nv46-wNbVZD-Hm2Opo.2L2dNJB-F-GnF_PmZUvr2yQnVSVXjhnw59_M6ukprow&dib_tag=se&keywords=iphone+15+128gb&qid=1762060159&sprefix=iphone+15+%2Caps%2C240&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1",
       "store": "amazon",
-      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-blue?wid=2560&hei=2560&fmt=p-jpg&qlt=80"
+      "image": "iphone15.jpg.webp"
     },
     {
       "title": "iPhone 15 - 128GB - Blue",
-      "price": 70490,
-      "price_display": "₹70,490",
-      "url": "https://www.croma.com/iphone-15-blue",
+      "price": 59490,
+      "price_display": "₹59,490",
+      "url": "https://www.reliancedigital.in/product/apple-iphone-15-128gb-blue-lmiqm7-7533785?internal_source=search_results",
       "store": "croma",
-      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-blue?wid=2560&hei=2560&fmt=p-jpg&qlt=80"
+      "image": "iphone15.jpg.webp"
     },
     {
       "title": "Apple iPhone 15 (Blue, 128GB)",
       "price": 72500,
-      "price_display": "₹72,500",
+      "price_display": "₹62,500",
       "url": "https://www.reliancedigital.in/iphone-15",
       "store": "reliance digital",
-      "image": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-blue?wid=2560&hei=2560&fmt=p-jpg&qlt=80"
+      "image": "iphone15.jpg.webp"
     }
   ],
+
+
   "samsung galaxy s24": [
     {
       "title": "Samsung Galaxy S24 5G (Marble Gray, 256GB)",
@@ -40,7 +42,7 @@
       "price_display": "₹52,999",
       "url": "https://www.flipkart.com/samsung-galaxy-s24-5g-snapdragon-marble-gray-256-gb/p/itmc60e0c4fb63b7?pid=MOBHDVFKAWDVHJTU&lid=LSTMOBHDVFKAWDVHJTUK7PT9L&marketplace=FLIPKART&q=samsung+galaxy+s24+5g&store=tyy%2F4io&srno=s_1_1&otracker=AS_Query_OrganicAutoSuggest_6_12_na_na_na&otracker1=AS_Query_OrganicAutoSuggest_6_12_na_na_na&fm=search-autosuggest&iid=cd105b98-c574-483f-999a-e9a1a2b0b88f.MOBHDVFKAWDVHJTU.SEARCH&ppt=sp&ppn=sp&ssid=rms15grj8g0000001762072631625&qH=5ea3ac6da13f1915",
       "store": "flipkart",
-      "image": "https://m.media-amazon.com/images/I/41SIlMzDIzL._SY300_SX300_QL70_FMwebp_.jpg"
+      "image": "samsung_s24.jpg"
     },
     {
       "title": "Samsung Galaxy S24 256GB Marble Gray",
@@ -48,7 +50,7 @@
       "price_display": "₹49,999",
       "url": "https://www.amazon.in/Samsung-Galaxy-Smartphone-Marble-Storage/dp/B0CS69DGSW/ref=sr_1_4?crid=2TPA7RS80BEJR&dib=eyJ2IjoiMSJ9.gE2Fm8nNhZD76TE31OJ5dQivI9hjeQCgGGqHyhdRHBwGhZ-yQGnazJ796J6Z9Q7qhKGVCK7WoeRprwJpqL0z43wwlqDTuX_ppPKlMYxfLYvT-CvSK3bPvc3sp3sHvTXcgyVF_5A4oC6bn6yvx-UjONh-raf94LKKn3oNODwU5kRhANhAHt1iIAkFpBBUGohQSbJW_Nmaf-RXUrSXQ1TplSy9fxZRQlKsm1uGS1M2te8.Jxr04MqBarqbJo5f1qJT1fNtZunAWjYA4kc4EJXs990&dib_tag=se&keywords=samsung%2Bgalaxy%2Bs24%2B5g&qid=1762069579&sprefix=samsung%2Bgalaxy%2Bs24%2B5g%2Caps%2C246&sr=8-4&th=1",
       "store": "amazon",
-      "image": "https://m.media-amazon.com/images/I/41SIlMzDIzL._SY300_SX300_QL70_FMwebp_.jpg"
+      "image": "samsung_s24.jpg"
     },
     {
       "title": "Galaxy S24 5G 256GB - Gray",
@@ -56,7 +58,7 @@
       "price_display": "₹70,999",
       "url": "https://www.croma.com/samsung-galaxy-s24-5g-8gb-ram-256gb-marble-gray-/p/303839",
       "store": "croma",
-      "image": "https://m.media-amazon.com/images/I/41SIlMzDIzL._SY300_SX300_QL70_FMwebp_.jpg"
+      "image": "samsung_s24.jpg"
     },
     {
       "title": "Samsung S24 5G (Marble Gray, 256GB)",
@@ -64,43 +66,38 @@
       "price_display": "₹64,999",
       "url": "https://www.reliancedigital.in/product/samsung-s24-5g-128-gb-8-gb-ram-marble-gray-mobile-phone-lt5ov0-7536864?internal_source=search_results",
       "store": "reliance digital",
-      "image": "https://m.media-amazon.com/images/I/41SIlMzDIzL._SY300_SX300_QL70_FMwebp_.jpg"
+      "image": "samsung_s24.jpg"
     }
   ],
-  "oneplus 12": [
+
+
+ "oneplus 12": [
     {
       "title": "OnePlus 12 5G (Flowy Emerald, 256GB)",
-      "price": 64999,
-      "price_display": "₹64,999",
-      "url": "https://www.flipkart.com/oneplus-12-emerald",
+      "price": 45999,
+      "price_display": "₹45,999",
+      "url": "https://www.flipkart.com/oneplus-12-flowy-emerald-256-gb/p/itm4464454f95a2e?pid=MOBGXGT7SDCAJ3GF&lid=LSTMOBGXGT7SDCAJ3GFA3PYML&marketplace=FLIPKART&q=oneplus+12+flowy+emerald+256+gb&store=tyy%2F4io&srno=s_1_1&otracker=AS_Query_OrganicAutoSuggest_1_21_na_na_na&otracker1=AS_Query_OrganicAutoSuggest_1_21_na_na_na&fm=Search&iid=3cdeea67-6c8e-4759-9193-6f3fc3320803.MOBGXGT7SDCAJ3GF.SEARCH&ppt=sp&ppn=sp&ssid=dcp1y4q5z40000001762072530438&qH=0c908261291abf53",
       "store": "flipkart",
-      "image": "https://m.media-amazon.com/images/I/71t3gmWvEyL._AC_SL1500_.jpg"
-    },
-    {
-      "title": "OnePlus 12 256GB Flowy Emerald",
-      "price": 66499,
-      "price_display": "₹66,499",
-      "url": "https://www.amazon.in/oneplus-12",
-      "store": "amazon",
-      "image": "https://m.media-amazon.com/images/I/71t3gmWvEyL._AC_SL1500_.jpg"
-    },
-    {
-      "title": "OnePlus 12 5G - 256GB Emerald",
-      "price": 65999,
-      "price_display": "₹65,999",
-      "url": "https://www.croma.com/oneplus-12",
-      "store": "croma",
-      "image": "https://m.media-amazon.com/images/I/71t3gmWvEyL._AC_SL1500_.jpg"
+      "image": "oneplus_12.jpg"
     },
     {
       "title": "OnePlus 12 (Flowy Emerald, 256GB)",
-      "price": 67500,
-      "price_display": "₹67,500",
-      "url": "https://www.reliancedigital.in/oneplus-12",
+      "price": 64999,
+      "price_display": "₹64,999",
+      "url": "https://www.reliancedigital.in/product/oneplus-12-5g-256-gb-12-gb-ram-smartphone-flowy-emerald-lrrlbg-7536044?internal_source=search_results",
       "store": "reliance digital",
-      "image": "https://m.media-amazon.com/images/I/71t3gmWvEyL._AC_SL1500_.jpg"
+      "image": "oneplus_12.jpg"
+    },
+    {
+      "title": "OnePlus 12 (Flowy Emerald, 256GB)",
+      "price": 56440,
+      "price_display": "₹56,440",
+      "url":"https://www.amazon.in/OnePlus-Glacial-White-256GB-Storage/dp/B0D2D54Q5M/ref=sr_1_1?crid=LH2ADPNEZBS5&dib=eyJ2IjoiMSJ9.IosFvB8t7fw8xvZq3B-FH_J0v18bLp6cSKKN5g4KL-by00R4AbAUCOno5YrEnBOLbf7O1m9UAC08i4WRTn0je2pl6oM-al9zRUCJrWlAAF6clP8l7-3DDXBE-UTXIAYrpCsT6aZ0kfkTSL28BNYWFRXI8pe1bFYYmTPaLyJVK0d8OKp05YiIU9VDbUFIcwxy9f3RIw_9eW_mx0Em3aNZmBI96XMsRDmOo2fWl532nhI.A1sSri5zpFIsG42eZKM8f5ASHA-drIYVW7bGYOomxKo&dib_tag=se&keywords=oneplus%2B12&qid=1762073124&sprefix=oneplus%2B12%2Caps%2C230&sr=8-1&th=1",
+      "store": "amazon",
+      "image": "oneplus_12.jpg"
     }
   ],
+
   "macbook air m2": [
     {
       "title": "Apple MacBook Air M2 Chip (8GB, 256GB SSD) - Midnight",
@@ -108,7 +105,7 @@
       "price_display": "₹109,900",
       "url": "https://www.flipkart.com/apple-macbook-air-m2-8-gb-512-gb-ssd-mac-os-monterey-mly43hn-a/p/itmdc5308fa78421?pid=COMGFB2GDBDYXF9D&lid=LSTCOMGFB2GDBDYXF9DPTKNCZ&marketplace=FLIPKART&q=macbook+air+m2+midnight&store=6bo%2Fb5g&srno=s_1_1&otracker=AS_QueryStore_OrganicAutoSuggest_1_18_na_na_ps&otracker1=AS_QueryStore_OrganicAutoSuggest_1_18_na_na_ps&fm=search-autosuggest&iid=f8852f9f-a3ff-4ec1-9fab-5cb3f6776cce.COMGFB2GDBDYXF9D.SEARCH&ppt=sp&ppn=sp&ssid=gw7fk6gw740000001762073120610&qH=cfb66b5e97eb7e4f",
       "store": "flipkart",
-      "image": "https://media-ik.croma.com/prod/https://media.tatacroma.com/Croma%20Assets/Computers%20Peripherals/Laptop/Images/311847_0_dm4ule.png?tr=w-640"
+      "image": "macbook_m2.jpg"
     },
     {
       "title": "Apple MacBook Air M2 - 256GB Midnight",
@@ -116,7 +113,7 @@
       "price_display": "₹80,990",
       "url": "https://www.croma.com/apple-macbook-air-13-6-inch-m2-16gb-256gb-macos-sequoia-midnight-/p/311847",
       "store": "croma",
-      "image": "https://media-ik.croma.com/prod/https://media.tatacroma.com/Croma%20Assets/Computers%20Peripherals/Laptop/Images/311847_0_dm4ule.png?tr=w-640"
+      "image": "macbook_m2.jpg"
     },
     {
       "title": "MacBook Air M2 (8GB RAM, 256GB) - Midnight",
@@ -124,147 +121,130 @@
       "price_display": "₹78,900",
       "url": "https://www.reliancedigital.in/product/apple-mc7x4hna-macbook-air-13-8-core-apple-m2-chip16-gb256-gb-ssdmac-os-sequoialiquid-retina-3446-cm-136-inch-midnight-m2x3bq-8698543?internal_source=search_results",
       "store": "reliance digital",
-      "image": "https://media-ik.croma.com/prod/https://media.tatacroma.com/Croma%20Assets/Computers%20Peripherals/Laptop/Images/311847_0_dm4ule.png?tr=w-640"
+      "image": "macbook_m2.jpg"
     }
   ],
+
+
   "dell xps 13": [
     {
       "title": "Dell XPS 13 Intel Core i7 13th Gen (16GB, 512GB SSD)",
-      "price": 134990,
-      "price_display": "₹1,34,990",
-      "url": "https://www.flipkart.com/dell-xps-13",
+      "price": 180490,
+      "price_display": "₹1,80,490",
+      "url": "https://www.flipkart.com/dell-xps-intel-core-ultra-7-256v-16-gb-512-gb-ssd-windows-11-home-intel-integrated-arc-120-hz-9350-creator-laptop/p/itm9e503803ce2b8?pid=COMHAUD4YPAHHQ5Z&lid=LSTCOMHAUD4YPAHHQ5ZZ0UWR1&marketplace=FLIPKART&q=dell+xps+13+16gb&store=6bo%2Fb5g&srno=s_1_1&otracker=search&otracker1=search&fm=search-autosuggest&iid=9e131711-dd75-451b-b5bd-cf5277807b22.COMHAUD4YPAHHQ5Z.SEARCH&ppt=sp&ppn=sp&ssid=g25zyly7io0000001762062948637&qH=3f96e3317dfda202",
       "store": "flipkart",
-      "image": "https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/xps-notebooks/xps-13-9320/spi/xps-13-9320-cnt-silver-non-touch-nvidia-gallery-5.psd?fmt=pjpg&pscan=auto&scl=1&hei=402&wid=402&qlt=90%2C0&resMode=sharp2&size=402%2C402&chrss=full"
+      "image": "dell_xps13.jpg"
     },
     {
       "title": "Dell XPS 13 Laptop i7 13th Gen 16GB 512GB",
-      "price": 136999,
-      "price_display": "₹1,36,999",
-      "url": "https://www.amazon.in/dell-xps-13",
+      "price": 180490,
+      "price_display": "₹1,80,490",
+      "url": "https://www.amazon.in/Dell-13-9350-Processor-Graphics-Platinum/dp/B0DPM9QZQD/ref=sr_1_3?crid=7WX87JP1ECIT&dib=eyJ2IjoiMSJ9.k8wtrYYxjpoWou42kzr0p8o540wIqXt8BIWNgciHwvy9aqd-tpYGfdo7FnHlHqGhYGB-FuGre6Y39nAAohyed6IS8iabhXXi735HSl0PkV7amvDkvzW-ABzsS84_hEJ4n6YwetjqHLS74iEYWRtHXCN4CtNR6O_eY0SVu8fVwchUoXNEHTvcjKfofRlJ70OW8DRpXj7Gh2W4yak46Y67d1OunWyRyPl0L7IYBzOaewc.bDFWmE2TKHi2Dd4UtR3nVtXarauMpih4gyWMNKD44ck&dib_tag=se&keywords=dell+xps+13+16gb&qid=1762063057&sprefix=dell+xps+13+16gb%2Caps%2C249&sr=8-3",
       "store": "amazon",
-      "image": "https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/xps-notebooks/xps-13-9320/spi/xps-13-9320-cnt-silver-non-touch-nvidia-gallery-5.psd?fmt=pjpg&pscan=auto&scl=1&hei=402&wid=402&qlt=90%2C0&resMode=sharp2&size=402%2C402&chrss=full"
+      "image": "dell_xps13.jpg"
     },
     {
       "title": "XPS 13 - Intel i7 13th Gen 16GB/512GB",
       "price": 135490,
-      "price_display": "₹1,35,490",
-      "url": "https://www.croma.com/dell-xps-13",
+      "price_display": "₹1,68,899",
+      "url": "https://www.croma.com/dell-xps-13-intel-core-ultra-7-thin-and-light-laptop-16gb-512gb-ssd-windows-11-home-13-4-inch-fhd-plus-display-ms-office-home-student-2021-platinum-1-19-kg-/p/306600",
       "store": "croma",
-      "image": "https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/xps-notebooks/xps-13-9320/spi/xps-13-9320-cnt-silver-non-touch-nvidia-gallery-5.psd?fmt=pjpg&pscan=auto&scl=1&hei=402&wid=402&qlt=90%2C0&resMode=sharp2&size=402%2C402&chrss=full"
-    },
-    {
-      "title": "Dell XPS 13 (i7, 16GB RAM, 512GB SSD)",
-      "price": 138500,
-      "price_display": "₹1,38,500",
-      "url": "https://www.reliancedigital.in/dell-xps-13",
-      "store": "reliance digital",
-      "image": "https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/xps-notebooks/xps-13-9320/spi/xps-13-9320-cnt-silver-non-touch-nvidia-gallery-5.psd?fmt=pjpg&pscan=auto&scl=1&hei=402&wid=402&qlt=90%2C0&resMode=sharp2&size=402%2C402&chrss=full"
+      "image": "dell_xps13.jpg"
     }
   ],
 
+    
   "samsung tab s9": [
     {
-      "title": "Samsung Galaxy Tab S9 11 inch (128GB, Wi-Fi) - Graphite",
-      "price": 64999,
-      "price_display": "₹64,999",
-      "url": "https://www.flipkart.com/galaxy-tab-s9",
-      "store": "flipkart",
-      "image": "https://m.media-amazon.com/images/I/71WSo-wLqQL._AC_SL1500_.jpg"
-    },
-    {
       "title": "Galaxy Tab S9 11-inch 128GB WiFi Graphite",
-      "price": 66999,
-      "price_display": "₹66,999",
-      "url": "https://www.amazon.in/galaxy-tab-s9",
+      "price": 72999,
+      "price_display": "₹72,999",
+      "url": "https://www.amazon.in/Samsung-Galaxy-Dynamic-Display-Expandable/dp/B0CCRWTG1S/ref=sr_1_1?crid=27N4RYF54880V&dib=eyJ2IjoiMSJ9.nNoi6CZdpcoIT-3n_KL6TouWQKV_oRBWDGJyxEI2iHr7wpLBNPwya4VzkOlk8bTTng2QtZhSNWh01z6LqHGX3z_W6e0Lb1bgE5sK77xboi-_ncdH2Ico7zKr6YZsVZG70PKoXIizBLcKLk9OIB0eGsG_qmHcP1ms0KhppzOGqbRxMfLuJubHoc2B_I_W9zyw4-8o7JArAXqUaBgNrrGqxhZr4YunFhJAC5qnBPxfOB8.VMB2I1SZ1wAoYGoO_sN07vMRTt8yG-ZO6PquqObXW_c&dib_tag=se&keywords=samsung%2Btab%2Bs9&nsdOptOutParam=true&qid=1762062150&sprefix=samsung%2Btab%2Bs9%2Caps%2C215&sr=8-1&th=1",
       "store": "amazon",
-      "image": "https://m.media-amazon.com/images/I/71WSo-wLqQL._AC_SL1500_.jpg"
+      "image":"samsungtabs9.jpg"
     },
     {
       "title": "Samsung Tab S9 - 11 inch 128GB Graphite",
-      "price": 65490,
-      "price_display": "₹65,490",
-      "url": "https://www.croma.com/galaxy-tab-s9",
+      "price": 85999,
+      "price_display": "₹85,999",
+      "url": "https://www.croma.com/samsung-galaxy-tab-s9-wi-fi+5g-android-tablet-with-stylus-11-inch-8gb-ram-128gb-rom-graphite-/p/275618",
       "store": "croma",
-      "image": "https://m.media-amazon.com/images/I/71WSo-wLqQL._AC_SL1500_.jpg"
+      "image":"samsungtabs9.jpg"
     },
     {
       "title": "Galaxy Tab S9 (11 inch, 128GB Wi-Fi) Graphite",
-      "price": 67500,
-      "price_display": "₹67,500",
-      "url": "https://www.reliancedigital.in/galaxy-tab-s9",
+      "price": 72999,
+      "price_display": "₹72,999",
+      "url": "https://www.reliancedigital.in/product/samsung-galaxy-tab-s9-2781-cm-11-inch-dynamic-amoled-2x-display-ram-8-gb-rom-128-gb-expandable-s-pen-in-box-wi-fi-tablet-grey-lkv9ii-7532836?internal_source=search_results",
       "store": "reliance digital",
-      "image": "https://m.media-amazon.com/images/I/71WSo-wLqQL._AC_SL1500_.jpg"
+      "image":"samsungtabs9.jpg"
     }
   ],
+
+
   "lg oled tv": [
     {
       "title": "LG 55 inch OLED 4K Smart TV (OLED55C3PSA)",
-      "price": 134990,
-      "price_display": "₹1,34,990",
-      "url": "https://www.flipkart.com/lg-oled-55",
+      "price": 127990,
+      "price_display": "₹1,27,990",
+      "url": "https://www.flipkart.com/lg-oled-a3-139-cm-55-inch-ultra-hd-4k-smart-webos-tv-ai-processor-4k-gen6-piz-refresh-rate-game-optimizer-magic-remote-control-5-year-guaranteed-new-os-experience/p/itm011f88f3c82d1?pid=TVSGQQDYGSYRJ5K2&lid=LSTTVSGQQDYGSYRJ5K2DT03RA&marketplace=FLIPKART&q=lg+oled+55+inch&store=ckf%2Fczl&srno=s_1_3&otracker=AS_QueryStore_OrganicAutoSuggest_1_8_na_na_na&otracker1=AS_QueryStore_OrganicAutoSuggest_1_8_na_na_na&fm=organic&iid=3ad57b20-3c24-44f6-852e-5062215febb1.TVSGQQDYGSYRJ5K2.SEARCH&ppt=hp&ppn=homepage&ssid=f82jvpa4lc0000001762061998851&qH=4aaa627c2b7105e8",
       "store": "flipkart",
-      "image": "https://m.media-amazon.com/images/I/71PKmzHIh7L._AC_SL1500_.jpg"
+      "image":"lg_oled.jpg"
     },
     {
       "title": "LG 55-inch OLED C3 4K Smart TV 2023 Model",
       "price": 137990,
       "price_display": "₹1,37,990",
-      "url": "https://www.amazon.in/lg-oled-55",
+      "url": "https://www.amazon.in/LG-inches-Ultra-Smart-55B3PSA/dp/B0D35SSB5Y/ref=sr_1_3?crid=32A83GOO08R8B&dib=eyJ2IjoiMSJ9.WtJUlaGEZ4TRDBkvRvY-7SPWnwRushAGvjU2pBCeWSopzxaJJDKadsvRImEFHLlmS_V7e5u80Ka3SrNuzTjpDOBN9MwSxd-4M0LQq-xs3AABGuFa0RE-hUvNdkeowSWzZs_cYZDNGT3QOnTU4NrNLwRJNrfVGyvr55GmmO2oCnE3WbJwUPGjQARpSXS6P-nLIik1aRkLx_3YpTfLIJsWgwb_Ocej2Id4o5JraY9P65k.Zge39-q9iMjzzTz2t_5qygg-NmjrekDmNnrwwVW70JQ&dib_tag=se&keywords=lg%2Boled%2Btv%2B55%2Binch&qid=1762061783&sprefix=lg%2Boled%2Caps%2C205&sr=8-3&th=1",
       "store": "amazon",
-      "image": "https://m.media-amazon.com/images/I/71PKmzHIh7L._AC_SL1500_.jpg"
+      "image":"lg_oled.jpg"
     },
     {
       "title": "LG OLED TV 55 inch 4K C3 Series",
-      "price": 135990,
-      "price_display": "₹1,35,990",
-      "url": "https://www.croma.com/lg-oled-55",
+      "price": 125299,
+      "price_display": "₹1,25,299",
+      "url": "https://www.croma.com/lg-evo-ai-c5-139-7-cm-55-inch-oled-4k-ultra-hd-smart-webos-tv-with-dolby-vision-dolby-atmos-2025-model-/p/316148",
       "store": "croma",
-      "image": "https://m.media-amazon.com/images/I/71PKmzHIh7L._AC_SL1500_.jpg"
+      "image":"lg_oled.jpg"
     },
     {
       "title": "LG 55 inch OLED Smart TV C3 Series",
-      "price": 139900,
-      "price_display": "₹1,39,900",
-      "url": "https://www.reliancedigital.in/lg-oled-55",
+      "price": 155300,
+      "price_display": "₹1,55,300",
+      "url": "https://www.reliancedigital.in/product/lg-1397-cm-55-inch-4k-ultra-hd-oled-tv-black-oled55g46la-lxan1i-7700707?internal_source=search_results",
       "store": "reliance digital",
-      "image": "https://m.media-amazon.com/images/I/71PKmzHIh7L._AC_SL1500_.jpg"
+      "image":"lg_oled.jpg"
     }
   ],
   
   "gopro hero 12": [
     {
       "title": "GoPro HERO12 Black Action Camera",
-      "price": 39990,
-      "price_display": "₹39,990",
-      "url": "https://www.flipkart.com/gopro-hero-12",
+      "price": 29990,
+      "price_display": "₹29,990",
+      "url": "https://www.flipkart.com/gopro-hero12-duallcdscreens-5-3k60-ultrahdvideo-hypersmooth-6-0withautoboostwaterproof-sports-action-camera/p/itmcc7429b05285b?pid=SAYGSVW7ZM7QGR3X&lid=LSTSAYGSVW7ZM7QGR3XEPUHLQ&marketplace=FLIPKART&q=gopro+hero+12&store=jek%2Fp31%2Fs3q&srno=s_1_1&otracker=search&otracker1=search&fm=organic&iid=2c8e0f86-eecc-4dbe-b2cc-df5d47ce9773.SAYGSVW7ZM7QGR3X.SEARCH&ppt=hp&ppn=homepage&ssid=mx3zhh69o00000001762060767637&qH=0171693451c7a731",
       "store": "flipkart",
-      "image": "https://m.media-amazon.com/images/I/61CySGv04AL._AC_SL1000_.jpg"
-    },
+      "image":"gopro12.jpg" 
+       },
     {
       "title": "GoPro HERO 12 Black Waterproof Action Camera",
-      "price": 41990,
-      "price_display": "₹41,990",
-      "url": "https://www.amazon.in/gopro-hero-12",
+      "price": 31990,
+      "price_display": "₹31,990",
+      "url": "https://www.amazon.in/GoPro-HERO12-Black-Powerhouse-Bundle/dp/B0DYTFG1R8/ref=sr_1_3?crid=1Q8QA3L6161PM&dib=eyJ2IjoiMSJ9._pHurIyOw7lC0tP6MYpzE4xht4cMTInOqVVJh31x-SsaRaw-56SDBhRRao21VxHTtxaFY7-3yOOjrfeCnYlFexceNDmPcdJVz4WfiH6YxbJoUByKrzTtFufrW-0lsTNAola0wMDPcb0pDBtTO9EfeckaKtMgDEALaRtltKV-_S08ME2z85ejrDBI7q9sIyCbbN1ZvmrhMowaj4dT086j6UAVlOHGe0nHSFpq1A2Gdmw.IM-PlJYQAFyKcrUVneFIAPOuc7Dhsmt6m3FsCj8tLtc&dib_tag=se&keywords=gopro%2Bhero%2B12%2Bpro%2Bblack&qid=1762060682&sprefix=gopro%2Bhero%2B12%2Bpro%2Bblack%2Caps%2C197&sr=8-3&th=1",
       "store": "amazon",
-      "image": "https://m.media-amazon.com/images/I/61CySGv04AL._AC_SL1000_.jpg"
+      "image":"gopro12.jpg"
     },
     {
       "title": "GoPro HERO12 Black - Action Camera",
-      "price": 40490,
-      "price_display": "₹40,490",
-      "url": "https://www.croma.com/gopro-hero-12",
+      "price": 29990,
+      "price_display": "₹29,990",
+      "url": "https://www.croma.com/gopro-hero12-5-3k-and-27mp-240-fps-waterproof-action-camera-with-voice-control-black-/p/300424",
       "store": "croma",
-      "image": "https://m.media-amazon.com/images/I/61CySGv04AL._AC_SL1000_.jpg"
-    },
-    {
-      "title": "HERO12 Black Action Camera by GoPro",
-      "price": 42500,
-      "price_display": "₹42,500",
-      "url": "https://www.reliancedigital.in/gopro-hero-12",
-      "store": "reliance digital",
-      "image": "https://m.media-amazon.com/images/I/61CySGv04AL._AC_SL1000_.jpg"
+      "image":"gopro12.jpg"
     }
+    
   ],
+
 
   "HP Smartchoice Victus": [
     {
@@ -273,7 +253,7 @@
       "price_display": "₹88,000",
       "url": "https://www.flipkart.com/hp-victus-intel-core-i5-13th-gen-13420h-16-gb-512-gb-ssd-windows-11-home-6-graphics-nvidia-geforce-rtx-4050-144-hz-15-fa2381tx-15-fa2701tx-15-fa1278tx-gaming-laptop/p/itm12155252a3140?pid=COMH8Z22GGEQZBVQ&lid=LSTCOMH8Z22GGEQZBVQ8SJJGF&marketplace=FLIPKART&q=hp+smart+choice+victus&store=6bo%2Fb5g&srno=s_1_2&otracker=search&otracker1=search&fm=search-autosuggest&iid=6e04d39b-73ca-496a-bf4c-801aec8454c6.COMH8Z22GGEQZBVQ.SEARCH&ppt=sp&ppn=sp&ssid=brtj39vy800000001762068740024&qH=6d50aef3f7321f30",
       "store": "flipkart",
-      "image": "https://m.media-amazon.com/images/I/71wT57gW0hL._SX679_.jpg"
+      "image":"hp_victus.jpg"
     },
     {
       "title": "HP Smartchoice Victus, 13th Gen Intel Core i5",
@@ -281,7 +261,7 @@
       "price_display": "₹79,900",
       "url": "https://www.amazon.in/HP-Smartchoice-i5-13420H-Upgradeable-Office24/dp/B0F6CVT23B/ref=sr_1_1?crid=3GE4W6LP9YZX4&dib=eyJ2IjoiMSJ9.ClaIv2UxJ9AZJMNOi9alzlcwdusDBZsYSnYwhrmOSO5R6CY26rT-rhzQ6AbiWhFolVHvFIOhdnfVfO1DF92P1Wm7EDlG1Rae09nUxq3i5tEfhIXJZH-fKpIkj08BusissasSjY5yDKwCYGEUJz1L9ifwcfKOOXJclT0_Yp5YQWghqXYD6UHet1-Kpst5j0YNAn_nvbysmL0h7K8EtkCxEr6hm75Yo0Eia6w0bd63Rjs.joUjuMCEvI47oXF0581CfxOaabFHJbL5dbN-Ksa2OLw&dib_tag=se&keywords=HP%2Bvictus&qid=1762068462&sprefix=hp%2Bvictus%2Caps%2C1435&sr=8-1&th=1",
       "store": "amazon",
-      "image": "https://m.media-amazon.com/images/I/71wT57gW0hL._SX679_.jpg"
+      "image":"hp_victus.jpg"
     },
     {
       "title": "HP Smartchoice Victus, 13th Gen Intel Core i5",
@@ -289,7 +269,30 @@
       "price_display": "₹77,490",
       "url": "https://www.reliancedigital.in/product/hp-victus-15-fa2701tx-gaming-laptop-intel-core-i5-13420h16-gb-512-gb-ssd6-gb-nvidia-geforce-rtx-4050-windows-11-homems-office-home-2024full-hd-3962-cm-156-inch-performance-blue-mf0vhi-9348516?internal_source=search_results",
       "store": "reliance digital",
-      "image": "https://m.media-amazon.com/images/I/71wT57gW0hL._SX679_.jpg"
+      "image":"hp_victus.jpg"
     }
+  ],
+
+
+  "Dell 15DC15250": [
+    
+    {
+      "title": "Dell 15DC15250, Intel Core i5 13th Gen - 1334U, 16GB RAM, 1TB SSD, FHD 15.6",
+      "price": 59990,
+      "price_display": "₹59,990",
+      "url":"https://www.amazon.in/Dell-15DC15250-Intel-Core-13th/dp/B0DSFQZTVW/ref=sr_1_1_sspa?crid=10E73L8WEYNV2&dib=eyJ2IjoiMSJ9.vdguK87jm1vOfsPpzH29zjfAJXXLBNvnoUw9Q1hi9_PJFxzC4wUptfwsxJEw2Gd3JqfF78J3Uec1UYNuRYt1bszggQstz9tOBVSqrNJWkzc1hlVQqQkO2NWvqvHO6S_EuPiaKyP1FoT_cs4FCriC7Q69wbiva7Rw_ukrJEk4REoCAxDdUUCsO1a16iNqSHRzGi2hflD4ovLOvM6yRmYy01HiE27ubmowYQ5C7n1MU9I.bR-x_Q934T2LVdL6EXflf8KLTuWa0ZrFRAyGWm_Qp4o&dib_tag=se&keywords=Dell+15DC15250&qid=1762069058&sprefix=dell+15dc15250%2Caps%2C410&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1",
+      "store": "amazon",
+      "image":"Dell 15DC15250.jpg"
+    },
+    {
+      "title": "Dell 15DC15250, Intel Core i5 13th Gen - 1334U, 16GB RAM, 1TB SSD, FHD 15.6",
+      "price": 61990,
+      "price_display": "₹6,990",
+      "url":"https://www.croma.com/dell-dc-15250-intel-core-i5-laptop-16gb-1tb-ssd-windows-11-15-6-inch-full-hd-ips-display-ms-office-home-2024-platinum-silver-1-66-kg-/p/318515",
+      "store": "croma",
+      "image":"Dell 15DC15250.jpg"
+    }
+    
   ]
+
 }
