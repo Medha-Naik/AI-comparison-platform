@@ -41,57 +41,66 @@ def init_oauth(app):
 @auth_bp.route('/auth/register', methods=['POST'])
 def register():
     db = next(get_db())
-    data = request.get_json() or {}
-    email = (data.get('email') or '').strip().lower()
-    password = data.get('password')
-    name = data.get('name')
-    if not email or not password:
-        return jsonify({"success": False, "message": "Email and password required"}), 400
-    existing = db.query(User).filter(User.email == email).first()
-    if existing:
-        return jsonify({"success": False, "message": "Email already registered"}), 400
-    user = User(email=email, name=name)
-    user.set_password(password)
-    db.add(user)
-    db.commit()
-    session['user_id'] = user.id
-    session['user_email'] = user.email
-    return jsonify({"success": True, "message": "Registered", "user": {"id": user.id, "email": user.email}})
+    try:
+        data = request.get_json() or {}
+        email = (data.get('email') or '').strip().lower()
+        password = data.get('password')
+        name = data.get('name')
+        if not email or not password:
+            return jsonify({"success": False, "message": "Email and password required"}), 400
+        existing = db.query(User).filter(User.email == email).first()
+        if existing:
+            return jsonify({"success": False, "message": "Email already registered"}), 400
+        user = User(email=email, name=name)
+        user.set_password(password)
+        db.add(user)
+        db.commit()
+        session['user_id'] = user.id
+        session['user_email'] = user.email
+        return jsonify({"success": True, "message": "Registered", "user": {"id": user.id, "email": user.email}})
+    except Exception as e:
+        db.rollback()
+        return jsonify({"success": False, "message": f"Registration failed: {str(e)}"}), 500
+    finally:
+        db.close()
 
 
 @auth_bp.route('/auth/login', methods=['POST'])
 def login():
     db = next(get_db())
-    data = request.get_json() or {}
-    email = (data.get('email') or '').strip().lower()
-    password = data.get('password')
-    
-    if not email or not password:
-        return jsonify({"success": False, "message": "Email and password required"}), 400
-    
-    user = db.query(User).filter(User.email == email).first()
-    
-    # Check if user exists
-    if not user:
-        return jsonify({
-            "success": False,
-            "message": "No account found with this email. Please sign up first.",
-            "error_type": "user_not_found",
-            "redirect": "signup"
-        }), 404
-    
-    # Check password
-    if not user.check_password(password):
-        return jsonify({
-            "success": False, 
-            "message": "Invalid password. Please try again.",
-            "error_type": "wrong_password"
-        }), 401
-    
-    # Login successful
-    session['user_id'] = user.id
-    session['user_email'] = user.email
-    return jsonify({"success": True, "message": "Logged in", "user": {"id": user.id, "email": user.email}})
+    try:
+        data = request.get_json() or {}
+        email = (data.get('email') or '').strip().lower()
+        password = data.get('password')
+        
+        if not email or not password:
+            return jsonify({"success": False, "message": "Email and password required"}), 400
+        
+        user = db.query(User).filter(User.email == email).first()
+        
+        # Check if user exists
+        if not user:
+            return jsonify({
+                "success": False,
+                "message": "No account found with this email. Please sign up first.",
+                "error_type": "user_not_found",
+                "redirect": "signup"
+            }), 404
+        
+        # Check password
+        if not user.check_password(password):
+            return jsonify({
+                "success": False, 
+                "message": "Invalid password. Please try again.",
+                "error_type": "wrong_password"
+            }), 401
+        
+        # Login successful
+        session['user_id'] = user.id
+        session['user_email'] = user.email
+        return jsonify({"success": True, "message": "Logged in", "user": {"id": user.id, "email": user.email}})
+    finally:
+        db.close()
 
 
 @auth_bp.route('/auth/logout', methods=['POST'])
@@ -181,32 +190,40 @@ def auth_google_callback():
 
     # Upsert user by google subject
     db = next(get_db())
-    google_sub = userinfo.get('sub')
-    email = (userinfo.get('email') or '').lower()
-    name = userinfo.get('name')
-    picture = userinfo.get('picture')
+    try:
+        google_sub = userinfo.get('sub')
+        email = (userinfo.get('email') or '').lower()
+        name = userinfo.get('name')
+        picture = userinfo.get('picture')
 
-    user = None
-    if email:
-        user = db.query(User).filter(User.email == email).first()
-    
-    if not user:
-        print(f"📝 Creating new user for {email}")
-        user = User(email=email, name=name)
-        db.add(user)
-        db.commit()
-        db.refresh(user)
-    else:
-        print(f"✅ Existing user found: {email}")
+        user = None
+        if email:
+            user = db.query(User).filter(User.email == email).first()
+        
+        if not user:
+            print(f"📝 Creating new user for {email}")
+            user = User(email=email, name=name)
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+        else:
+            print(f"✅ Existing user found: {email}")
 
-    # Set session
-    session['user_id'] = user.id
-    session['user_email'] = user.email
+        # Set session
+        session['user_id'] = user.id
+        session['user_email'] = user.email
 
-    print(f"🎉 Login successful, redirecting to wishlist")
-    
-    # Redirect to wishlist page after login
-    return redirect('/wishlist')
+        print(f"🎉 Login successful, redirecting to wishlist")
+        
+        # Redirect to wishlist page after login
+        return redirect('/wishlist')
+    except Exception as e:
+        db.rollback()
+        import traceback
+        print(f"❌ Error in OAuth callback: {traceback.format_exc()}")
+        return jsonify({"success": False, "message": f"OAuth callback failed: {str(e)}"}), 500
+    finally:
+        db.close()
 
 
 # Trailing-slash tolerant aliases (avoid 404 if provider appends a slash)

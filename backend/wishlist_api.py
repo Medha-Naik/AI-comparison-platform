@@ -155,10 +155,19 @@ def update_item_prices(wishlist_item_id):
     except Exception as e:
         return jsonify({"success": False, "message": f"Server error: {str(e)}"}), 500
 
-@wishlist_bp.route('/wishlist/check/<user_email>/<product_name>', methods=['GET'])
-def check_in_wishlist(user_email, product_name):
+@wishlist_bp.route('/wishlist/check/<product_name>', methods=['GET'])
+def check_in_wishlist(product_name):
     """Check if a product is in user's wishlist"""
     try:
+        # Require session auth
+        if not session.get('user_id'):
+            return jsonify({"success": False, "message": "Authentication required"}), 401
+        
+        # Use email from session
+        user_email = session.get('user_email')
+        if not user_email:
+            return jsonify({"success": False, "message": "User email not found in session"}), 401
+        
         wishlist = wishlist_service.get_wishlist(user_email)
         
         for item in wishlist:
@@ -188,64 +197,75 @@ def get_wishlist_item_details(wishlist_item_id):
         from datetime import datetime, timedelta
         
         db = next(get_db())
-        
-        # Get wishlist item
-        item = db.query(WishlistItem).filter(
-            WishlistItem.id == wishlist_item_id,
-            WishlistItem.user_id == session.get('user_id')
-        ).first()
-        
-        if not item:
-            return jsonify({"success": False, "message": "Wishlist item not found"}), 404
-        
-        # Get price history for last 30 days
-        thirty_days_ago = datetime.utcnow() - timedelta(days=30)
-        price_history = db.query(PriceHistory).filter(
-            PriceHistory.wishlist_item_id == wishlist_item_id,
-            PriceHistory.recorded_at >= thirty_days_ago
-        ).order_by(PriceHistory.recorded_at.asc()).all()
-        
-        # Group by store
-        history_by_store = {}
-        current_prices = {}
-        
-        for record in price_history:
-            store = record.store
-            if store not in history_by_store:
-                history_by_store[store] = []
+        try:
+            # Get wishlist item
+            item = db.query(WishlistItem).filter(
+                WishlistItem.id == wishlist_item_id,
+                WishlistItem.user_id == session.get('user_id')
+            ).first()
             
-            history_by_store[store].append({
-                'date': record.recorded_at.strftime('%Y-%m-%d'),
-                'price': record.price,
-                'price_display': record.price_display,
-                'url': record.product_url
-            })
+            if not item:
+                return jsonify({"success": False, "message": "Wishlist item not found"}), 404
             
-            # Keep track of latest price for each store
-            current_prices[store] = {
-                'price': record.price,
-                'price_display': record.price_display,
-                'url': record.product_url,
-                'title': record.product_title,
-                'image': record.product_image
-            }
-        
-        # Calculate lowest price
-        lowest_price = min(current_prices.values(), key=lambda x: x['price'])['price'] if current_prices else None
-        
-        return jsonify({
-            "success": True,
-            "item": {
-                "id": item.id,
-                "product_name": item.product_name,
-                "product_category": item.product_category,
-                "target_price": item.target_price,
-                "created_at": item.created_at.strftime('%Y-%m-%d')
-            },
-            "current_prices": current_prices,
-            "price_history": history_by_store,
-            "lowest_price": lowest_price
-        }), 200
+            # Get latest price for each store (for current prices display)
+            all_prices = db.query(PriceHistory).filter(
+                PriceHistory.wishlist_item_id == wishlist_item_id
+            ).order_by(PriceHistory.recorded_at.desc()).all()
+            
+            # Get the latest price for each store
+            current_prices = {}
+            seen_stores = set()
+            for record in all_prices:
+                store = record.store
+                if store not in seen_stores:
+                    seen_stores.add(store)
+                    current_prices[store] = {
+                        'price': record.price,
+                        'price_display': record.price_display,
+                        'url': record.product_url,
+                        'title': record.product_title,
+                        'image': record.product_image
+                    }
+            
+            # Get price history for last 30 days (for chart)
+            thirty_days_ago = datetime.utcnow() - timedelta(days=30)
+            price_history = db.query(PriceHistory).filter(
+                PriceHistory.wishlist_item_id == wishlist_item_id,
+                PriceHistory.recorded_at >= thirty_days_ago
+            ).order_by(PriceHistory.recorded_at.asc()).all()
+            
+            # Group price history by store
+            history_by_store = {}
+            for record in price_history:
+                store = record.store
+                if store not in history_by_store:
+                    history_by_store[store] = []
+                
+                history_by_store[store].append({
+                    'date': record.recorded_at.isoformat(),
+                    'price': record.price,
+                    'price_display': record.price_display,
+                    'url': record.product_url
+                })
+            
+            # Calculate lowest price
+            lowest_price = min(current_prices.values(), key=lambda x: x['price'])['price'] if current_prices else None
+            
+            return jsonify({
+                "success": True,
+                "item": {
+                    "id": item.id,
+                    "product_name": item.product_name,
+                    "product_category": item.product_category,
+                    "target_price": item.target_price,
+                    "created_at": item.created_at.strftime('%Y-%m-%d')
+                },
+                "current_prices": current_prices,
+                "price_history": history_by_store,
+                "lowest_price": lowest_price
+            }), 200
+        finally:
+            db.close()
         
     except Exception as e:
         import traceback

@@ -38,18 +38,8 @@ async function checkAuthAndLoadProfile() {
     document.getElementById('profileName').textContent = me.name || 'User';
     document.getElementById('profileEmail').textContent = me.email || '';
     
-    // Set edit modal values
-    document.getElementById('editName').value = me.name || '';
-    document.getElementById('editEmail').value = me.email || '';
-    
     // Load wishlist count
     await loadWishlistCount();
-    
-    // Calculate member since (mock data - you can enhance this with actual registration date)
-    const memberDate = new Date();
-    memberDate.setMonth(memberDate.getMonth() - 3); // Mock: 3 months ago
-    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    document.getElementById('memberSince').textContent = `${monthNames[memberDate.getMonth()]} ${memberDate.getFullYear()}`;
     
   } catch (error) {
     console.error('Error loading profile:', error);
@@ -62,57 +52,17 @@ async function checkAuthAndLoadProfile() {
 
 async function loadWishlistCount() {
   try {
-    const res = await fetch('/api/wishlist');
+    const res = await fetch('/api/wishlist/me');
     const data = await res.json();
     
-    if (data.success) {
-      document.getElementById('wishlistCount').textContent = data.items.length;
+    if (data.success && data.wishlist) {
+      document.getElementById('wishlistCount').textContent = data.wishlist.length;
+    } else {
+      document.getElementById('wishlistCount').textContent = '0';
     }
   } catch (error) {
     console.error('Error loading wishlist count:', error);
     document.getElementById('wishlistCount').textContent = '0';
-  }
-}
-
-function showEditProfile() {
-  const modal = document.getElementById('editModal');
-  modal.classList.add('show');
-}
-
-function closeEditProfile() {
-  const modal = document.getElementById('editModal');
-  modal.classList.remove('show');
-}
-
-async function saveProfile() {
-  const name = document.getElementById('editName').value.trim();
-  
-  if (!name) {
-    showNotification('Please enter a name', 'error');
-    return;
-  }
-  
-  try {
-    // Note: You'll need to create an endpoint in your Flask app to update user profile
-    // For now, this is a placeholder that shows the expected behavior
-    const res = await fetch('/auth/update-profile', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name })
-    });
-    
-    const data = await res.json();
-    
-    if (data.success) {
-      showNotification('Profile updated successfully', 'success');
-      document.getElementById('profileName').textContent = name;
-      closeEditProfile();
-    } else {
-      showNotification(data.message || 'Failed to update profile', 'error');
-    }
-  } catch (error) {
-    console.error('Error updating profile:', error);
-    showNotification('Network error. Please try again.', 'error');
   }
 }
 
@@ -189,10 +139,3 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
-
-// Close modal when clicking outside
-document.getElementById('editModal').addEventListener('click', (e) => {
-  if (e.target.id === 'editModal') {
-    closeEditProfile();
-  }
-});

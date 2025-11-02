@@ -56,32 +56,12 @@
             <div class="stat-label">Wishlist Items</div>
           </div>
         </div>
-        <div class="stat-card">
-          <i class="fa-solid fa-clock"></i>
-          <div class="stat-info">
-            <div class="stat-value" id="memberSince">-</div>
-            <div class="stat-label">Member Since</div>
-          </div>
-        </div>
       </div>
 
       <!-- Profile Actions -->
       <div class="profile-actions">
         <h2>Account</h2>
         
-        <div class="action-card">
-          <div class="action-icon">
-            <i class="fa-solid fa-user-pen"></i>
-          </div>
-          <div class="action-details">
-            <div class="action-title">Edit Profile</div>
-            <div class="action-description">Update your name and preferences</div>
-          </div>
-          <button class="action-btn" onclick="showEditProfile()">
-            <i class="fa-solid fa-chevron-right"></i>
-          </button>
-        </div>
-
         <div class="action-card">
           <div class="action-icon">
             <i class="fa-solid fa-heart"></i>
@@ -110,35 +90,6 @@
       </div>
     </div>
   </main>
-
-  <!-- Edit Profile Modal -->
-  <div id="editModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Edit Profile</h2>
-        <button class="close-btn" onclick="closeEditProfile()">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="editName">Full Name</label>
-          <input type="text" id="editName" placeholder="Enter your name" />
-        </div>
-        <div class="form-group">
-          <label for="editEmail">Email</label>
-          <input type="email" id="editEmail" placeholder="Enter your email" disabled />
-          <small>Email cannot be changed</small>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeEditProfile()">Cancel</button>
-        <button class="btn btn-primary" onclick="saveProfile()">
-          <i class="fa-solid fa-save"></i> Save Changes
-        </button>
-      </div>
-    </div>
-  </div>
 
   <!-- JS -->
   <script src="{{ url_for('static', filename='profile.js') }}" defer></script>

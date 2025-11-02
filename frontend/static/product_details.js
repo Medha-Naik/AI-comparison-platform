@@ -35,6 +35,214 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('pdStore').textContent = store;
   document.getElementById('pdPrice').textContent = price;
   document.getElementById('pdLink').href = url;
+
+  // Setup wishlist button
+  const wishlistBtn = document.getElementById('wishlistBtn');
+  const wishlistIcon = wishlistBtn.querySelector('i');
+  let isInWishlist = false;
+
+  // Check if product is already in wishlist
+  async function checkWishlistStatus() {
+    try {
+      const meRes = await fetch('/auth/me');
+      const me = await meRes.json();
+      if (!me.authenticated) {
+        return;
+      }
+
+      const checkRes = await fetch(`/api/wishlist/check/${encodeURIComponent(title)}`);
+      const checkData = await checkRes.json();
+      
+      if (checkData.success && checkData.in_wishlist) {
+        isInWishlist = true;
+        wishlistIcon.classList.remove('fa-regular');
+        wishlistIcon.classList.add('fa-solid');
+        wishlistBtn.style.borderColor = '#ef4444';
+        wishlistBtn.style.background = '#fef2f2';
+        wishlistIcon.style.color = '#ef4444';
+        wishlistBtn.title = 'Remove from Wishlist';
+      }
+    } catch (error) {
+      console.error('Error checking wishlist status:', error);
+    }
+  }
+
+  checkWishlistStatus();
+
+  // Handle wishlist button click
+  wishlistBtn.addEventListener('click', async () => {
+    try {
+      const meRes = await fetch('/auth/me');
+      const me = await meRes.json();
+      
+      if (!me.authenticated) {
+        const next = encodeURIComponent(window.location.href);
+        window.location.href = `/login?next=${next}`;
+        return;
+      }
+
+      if (isInWishlist) {
+        // Remove from wishlist
+        const checkRes = await fetch(`/api/wishlist/check/${encodeURIComponent(title)}`);
+        const checkData = await checkRes.json();
+        
+        if (checkData.success && checkData.in_wishlist && checkData.wishlist_item) {
+          const removeRes = await fetch('/api/wishlist/remove', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              wishlist_item_id: checkData.wishlist_item.id
+            })
+          });
+          
+          const removeData = await removeRes.json();
+          if (removeData.success) {
+            isInWishlist = false;
+            wishlistIcon.classList.remove('fa-solid');
+            wishlistIcon.classList.add('fa-regular');
+            wishlistBtn.style.borderColor = '#e5e7eb';
+            wishlistBtn.style.background = 'none';
+            wishlistIcon.style.color = '#666';
+            wishlistBtn.title = 'Add to Wishlist';
+            showNotification('Removed from wishlist', 'success');
+          }
+        }
+      } else {
+        // Ask for target price when adding to wishlist
+        const currentPrice = price.replace(/[^\d.]/g, ''); // Extract numeric price
+        const targetPriceInput = prompt(
+          `Add "${title}" to wishlist?\n\n` +
+          `Optional: Enter your target price (₹) or leave blank:\n` +
+          (currentPrice ? `Current price: ${price}` : ''),
+          ''
+        );
+        
+        if (targetPriceInput === null) { // User cancelled
+          return;
+        }
+        
+        let targetPrice = null;
+        if (targetPriceInput.trim() !== '') {
+          const parsed = parseFloat(targetPriceInput.trim().replace(/[^\d.]/g, ''));
+          if (!isNaN(parsed) && parsed > 0) {
+            targetPrice = parsed;
+          } else {
+            showNotification('Invalid price. Please enter a valid number or leave blank.', 'error');
+            return;
+          }
+        }
+        
+        // Add to wishlist
+        const response = await fetch('/api/wishlist/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            product_name: title,
+            product_category: getCategoryFromStore(store),
+            target_price: targetPrice
+          })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          isInWishlist = true;
+          wishlistIcon.classList.remove('fa-regular');
+          wishlistIcon.classList.add('fa-solid');
+          wishlistBtn.style.borderColor = '#ef4444';
+          wishlistBtn.style.background = '#fef2f2';
+          wishlistIcon.style.color = '#ef4444';
+          wishlistBtn.title = 'Remove from Wishlist';
+          showNotification(
+            targetPrice 
+              ? `Added to wishlist with target price ₹${targetPrice.toLocaleString()}!` 
+              : 'Added to wishlist!', 
+            'success'
+          );
+        } else {
+          showNotification(data.message || 'Failed to add to wishlist', 'error');
+        }
+      }
+    } catch (error) {
+      console.error('Error toggling wishlist:', error);
+      showNotification('Failed to update wishlist', 'error');
+    }
+  });
+
+  function getCategoryFromStore(store) {
+    const categoryMap = {
+      'flipkart': 'Electronics',
+      'amazon': 'Electronics',
+      'reliance digital': 'Electronics',
+      'croma': 'Electronics',
+      'girias': 'Electronics'
+    };
+    return categoryMap[store.toLowerCase()] || 'General';
+  }
+
+  function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      z-index: 10001;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      animation: slideIn 0.3s ease;
+    `;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.style.animation = 'slideOut 0.3s ease';
+      setTimeout(() => {
+        if (document.body.contains(notification)) {
+          document.body.removeChild(notification);
+        }
+      }, 300);
+    }, 3000);
+  }
+
+  // Add CSS animations if not already present
+  if (!document.getElementById('notification-styles')) {
+    const style = document.createElement('style');
+    style.id = 'notification-styles';
+    style.textContent = `
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+      .wishlist-button:hover {
+        border-color: #ef4444 !important;
+        background: #fef2f2 !important;
+        transform: scale(1.05);
+      }
+      .wishlist-button:hover i {
+        color: #ef4444 !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
   
   const imgWrap = document.getElementById('pdImage');
   if (image) {
@@ -278,15 +486,6 @@ document.addEventListener('DOMContentLoaded', () => {
         '<p style="color: #ef4444;">Error loading price data.</p>';
     }
   }
-
-  // Range button handlers
-  const rangeButtons = Array.from(document.querySelectorAll('.range-btn'));
-  rangeButtons.forEach(btn => btn.addEventListener('click', async () => {
-    rangeButtons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const days = btn.getAttribute('data-days');
-    await loadHistoryAndRender(days);
-  }));
 
   // Load reviews
   async function loadReviews() {

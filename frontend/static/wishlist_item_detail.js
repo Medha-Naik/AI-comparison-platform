@@ -103,7 +103,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function displayCurrentPrices(prices, lowestPrice) {
-    let html = '';
+    if (!prices || Object.keys(prices).length === 0) {
+      currentPrices.innerHTML = `
+        <div style="text-align: center; padding: 40px; color: #666;">
+          <i class="fa-solid fa-info-circle" style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;"></i>
+          <p>No price data available. Click "Refresh Prices" to fetch current prices.</p>
+        </div>
+      `;
+      return;
+    }
+
+    let html = '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">';
 
     const storeOrder = ['flipkart', 'amazon', 'croma', 'reliance'];
     const sortedStores = Object.keys(prices).sort((a, b) => {
@@ -117,10 +127,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     sortedStores.forEach(store => {
       const priceData = prices[store];
-      const isLowest = priceData.price === lowestPrice;
+      const isLowest = lowestPrice && priceData.price === lowestPrice;
 
       html += `
-        <div class="store-price ${isLowest ? 'lowest' : ''}">
+        <div class="store-price ${isLowest ? 'lowest' : ''}" data-store="${store}">
           <h4>${store.charAt(0).toUpperCase() + store.slice(1)}</h4>
           <div class="price ${isLowest ? 'lowest' : ''}">${priceData.price_display}</div>
           ${isLowest ? '<div class="lowest-badge">Lowest Price</div>' : ''}
@@ -133,11 +143,17 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     });
 
+    html += '</div>';
     currentPrices.innerHTML = html;
   }
 
   function displayPriceChart(priceHistory) {
     const ctx = document.getElementById('priceHistoryChart').getContext('2d');
+
+    // Destroy existing chart if it exists
+    if (priceChart) {
+      priceChart.destroy();
+    }
 
     // Store colors
     const storeColors = {
@@ -150,21 +166,53 @@ document.addEventListener('DOMContentLoaded', () => {
     // Prepare datasets
     const datasets = [];
 
+    if (!priceHistory || Object.keys(priceHistory).length === 0) {
+      // Show empty state
+      priceChart = new Chart(ctx, {
+        type: 'line',
+        data: { datasets: [] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled: false }
+          }
+        }
+      });
+      
+      // Show message
+      const chartContainer = ctx.canvas.parentElement;
+      const emptyMsg = document.createElement('div');
+      emptyMsg.style.cssText = 'text-align: center; padding: 40px; color: #666;';
+      emptyMsg.innerHTML = `
+        <i class="fa-solid fa-chart-line" style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;"></i>
+        <p>No price history available for the last 30 days.</p>
+        <p style="font-size: 14px; margin-top: 8px;">Prices will appear here once price tracking begins.</p>
+      `;
+      chartContainer.appendChild(emptyMsg);
+      return;
+    }
+
     Object.keys(priceHistory).forEach(store => {
       const history = priceHistory[store];
       
-      datasets.push({
-        label: store.charAt(0).toUpperCase() + store.slice(1),
-        data: history.map(item => ({
-          x: item.date,
-          y: item.price
-        })),
-        borderColor: storeColors[store] || '#666',
-        backgroundColor: storeColors[store] || '#666',
-        tension: 0.1,
-        pointRadius: 4,
-        pointHoverRadius: 6
-      });
+      if (history && history.length > 0) {
+        datasets.push({
+          label: store.charAt(0).toUpperCase() + store.slice(1),
+          data: history.map(item => ({
+            x: item.date,  // ISO format string - Chart.js will parse it
+            y: item.price
+          })),
+          borderColor: storeColors[store] || '#666',
+          backgroundColor: (storeColors[store] || '#666') + '40',  // Add transparency
+          fill: false,
+          tension: 0.4,
+          pointRadius: 3,
+          pointHoverRadius: 6,
+          borderWidth: 2
+        });
+      }
     });
 
     priceChart = new Chart(ctx, {
@@ -181,13 +229,31 @@ document.addEventListener('DOMContentLoaded', () => {
           legend: {
             display: true,
             position: 'top',
+            labels: {
+              usePointStyle: true,
+              padding: 15,
+              font: {
+                size: 12,
+                weight: '500'
+              }
+            }
           },
           tooltip: {
+            mode: 'index',
+            intersect: false,
             callbacks: {
               label: function(context) {
                 return `${context.dataset.label}: ₹${context.parsed.y.toLocaleString()}`;
+              },
+              title: function(context) {
+                const date = new Date(context[0].parsed.x);
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
               }
-            }
+            },
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            padding: 12,
+            titleFont: { size: 13, weight: 'bold' },
+            bodyFont: { size: 12 }
           }
         },
         scales: {
@@ -197,23 +263,35 @@ document.addEventListener('DOMContentLoaded', () => {
               unit: 'day',
               displayFormats: {
                 day: 'MMM d'
-              }
+              },
+              tooltipFormat: 'MMM d, yyyy'
             },
             title: {
               display: true,
-              text: 'Date'
+              text: 'Date',
+              font: { size: 13, weight: '600' }
+            },
+            grid: {
+              display: true,
+              color: 'rgba(0, 0, 0, 0.05)'
             }
           },
           y: {
             beginAtZero: false,
             title: {
               display: true,
-              text: 'Price (₹)'
+              text: 'Price (₹)',
+              font: { size: 13, weight: '600' }
             },
             ticks: {
               callback: function(value) {
                 return '₹' + value.toLocaleString();
-              }
+              },
+              font: { size: 11 }
+            },
+            grid: {
+              display: true,
+              color: 'rgba(0, 0, 0, 0.05)'
             }
           }
         }

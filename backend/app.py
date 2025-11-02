@@ -55,8 +55,12 @@ def product_details():
 
 @app.route('/product')
 def product():
-    """Serve the product details page"""
-    return render_template('product.html')
+    """Redirect to results page (product.html removed)"""
+    from flask import redirect, request
+    query = request.args.get('q', '')
+    if query:
+        return redirect(f'/results?q={query}')
+    return redirect('/')
 
 @app.route('/login')
 def login_page():
