@@ -420,15 +420,15 @@ class WishlistService:
             server.sendmail(smtp_username, user_email, text)
             server.quit()
             
-            print(f"[EMAIL] ✅ Price alert email successfully sent to {user_email}")
+            print(f"[EMAIL]  Price alert email successfully sent to {user_email}")
             
         except smtplib.SMTPAuthenticationError as e:
-            print(f"[EMAIL] ❌ SMTP Authentication Error: {str(e)}")
+            print(f"[EMAIL]  SMTP Authentication Error: {str(e)}")
             print(f"[EMAIL] Check your SMTP_USERNAME and SMTP_PASSWORD. For Gmail, use an App Password.")
         except smtplib.SMTPException as e:
-            print(f"[EMAIL] ❌ SMTP Error: {str(e)}")
+            print(f"[EMAIL]  SMTP Error: {str(e)}")
         except Exception as e:
-            print(f"[EMAIL] ❌ Error sending email: {str(e)}")
+            print(f"[EMAIL]  Error sending email: {str(e)}")
             import traceback
             traceback.print_exc()
     

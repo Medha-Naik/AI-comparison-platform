@@ -17,11 +17,11 @@ def update_all_wishlist_prices():
     try:
         result = wishlist_service.update_all_prices()
         if result['success']:
-            print(f"[Scheduler] ✅ {result['message']}")
+            print(f"[Scheduler]  {result['message']}")
         else:
-            print(f"[Scheduler] ❌ {result['message']}")
+            print(f"[Scheduler]  {result['message']}")
     except Exception as e:
-        print(f"[Scheduler] ❌ Error: {str(e)}")
+        print(f"[Scheduler] Error: {str(e)}")
 
 def main():
     """Main scheduler function"""
@@ -47,7 +47,7 @@ def main():
             schedule.run_pending()
             time.sleep(60)  # Check every minute
     except KeyboardInterrupt:
-        print("\n🛑 Scheduler stopped by user")
+        print("\n Scheduler stopped by user")
 
 if __name__ == "__main__":
     main()
