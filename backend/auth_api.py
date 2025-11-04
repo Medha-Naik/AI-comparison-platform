@@ -9,19 +9,15 @@ import os
 
 auth_bp = Blueprint('auth', __name__)
 
-# Ensure tables exist
 create_tables()
 
-# OAuth (Google) setup
 oauth = OAuth()
 GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
 
-# Debug: Print what we got from environment
 print(f"🔍 DEBUG - GOOGLE_CLIENT_ID: {GOOGLE_CLIENT_ID[:30] if GOOGLE_CLIENT_ID else 'NOT SET'}...")
 print(f"🔍 DEBUG - GOOGLE_CLIENT_SECRET: {'SET' if GOOGLE_CLIENT_SECRET else 'NOT SET'}")
 
-# We'll register provider lazily inside init_app to avoid issues during import
 def init_oauth(app):
     oauth.init_app(app)
     if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
@@ -172,13 +168,24 @@ GOOGLE_CLIENT_SECRET=your-client-secret-here</pre>
         """
         return render_template_string(error_html), 500
     
-    # Explicitly set the redirect URI to match what's in Google Console
-    redirect_uri = url_for('auth.auth_google_callback', _external=True, _scheme='http')
+    # Detect if we're on localhost or production
+    if request.host.startswith('localhost') or request.host.startswith('127.0.0.1'):
+        scheme = 'http'
+    else:
+        scheme = 'https'
+    
+    redirect_uri = url_for('auth.auth_google_callback', _external=True, _scheme=scheme)
     
     print(f"🔐 Initiating Google OAuth login")
     print(f"📍 Redirect URI: {redirect_uri}")
+    print(f"🌐 Request host: {request.host}")
+    print(f"🔒 Scheme: {scheme}")
     
-    return oauth.google.authorize_redirect(redirect_uri)
+    # FORCE ACCOUNT SELECTION: Add prompt=select_account
+    return oauth.google.authorize_redirect(
+        redirect_uri,
+        prompt='select_account'  # This forces Google to show account picker every time
+    )
 
 
 # Google OAuth: callback
@@ -234,35 +241,39 @@ def auth_google_callback():
     if not userinfo:
         return jsonify({"success": False, "message": "Failed to retrieve user info"}), 400
 
-    # Upsert user by google subject
+    # Check if user exists and redirect accordingly
     db = next(get_db())
     try:
-        google_sub = userinfo.get('sub')
         email = (userinfo.get('email') or '').lower()
         name = userinfo.get('name')
         picture = userinfo.get('picture')
 
-        user = None
-        if email:
-            user = db.query(User).filter(User.email == email).first()
+        # Check if user already exists
+        user = db.query(User).filter(User.email == email).first()
         
-        if not user:
-            print(f"📝 Creating new user for {email}")
+        if user:
+            # EXISTING USER: Log them in and redirect to wishlist
+            print(f"✅ Existing user found: {email} - Logging in")
+            session['user_id'] = user.id
+            session['user_email'] = user.email
+            print(f"🎉 Login successful, redirecting to wishlist")
+            return redirect('/wishlist')
+        else:
+            # NEW USER: Create account and redirect to signup/login page with welcome message
+            print(f"📝 New user detected: {email} - Creating account")
             user = User(email=email, name=name)
             db.add(user)
             db.commit()
             db.refresh(user)
-        else:
-            print(f"✅ Existing user found: {email}")
-
-        # Set session
-        session['user_id'] = user.id
-        session['user_email'] = user.email
-
-        print(f"🎉 Login successful, redirecting to wishlist")
-        
-        # Redirect to wishlist page after login
-        return redirect('/wishlist')
+            
+            # Set session
+            session['user_id'] = user.id
+            session['user_email'] = user.email
+            
+            print(f"🆕 New account created, redirecting to login page with welcome message")
+            # Redirect to login page (which will show welcome message and redirect to wishlist)
+            return redirect('/login?new_google_user=true')
+            
     except Exception as e:
         db.rollback()
         import traceback

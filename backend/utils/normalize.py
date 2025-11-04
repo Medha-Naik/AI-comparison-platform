@@ -1,14 +1,7 @@
 import re
 
 def parse_price(price_text):
-    """
-    Extract numeric price from text
-    Examples:
-        '₹66,990.00' -> 66990
-        '₹14,999' -> 14999
-        '$1,234.56' -> 1234
-        'Rs. 50,000.50' -> 50000
-    """
+   
     if not price_text:
         return None
     

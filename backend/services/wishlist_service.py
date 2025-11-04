@@ -323,20 +323,20 @@ class WishlistService:
                                         daemon=True
                                     )
                                     thread.start()
-                                    print(f"[PRICE ALERT] ✅ Started email thread for '{wishlist_item.product_name}' to {user_email}")
+                                    print(f"[PRICE ALERT]  Started email thread for '{wishlist_item.product_name}' to {user_email}")
                                 except Exception as email_thread_error:
-                                    print(f"[PRICE ALERT] ❌ Error starting email thread: {str(email_thread_error)}")
+                                    print(f"[PRICE ALERT]  Error starting email thread: {str(email_thread_error)}")
                                     import traceback
                                     traceback.print_exc()
                             else:
-                                print(f"[PRICE ALERT] ⚠️  No email found for user {wishlist_item.user_id}, skipping email notification")
+                                print(f"[PRICE ALERT]  No email found for user {wishlist_item.user_id}, skipping email notification")
                         except Exception as e:
                             db.rollback()
-                            print(f"[PRICE ALERT] ❌ Error creating notification: {str(e)}")
+                            print(f"[PRICE ALERT]  Error creating notification: {str(e)}")
                             import traceback
                             traceback.print_exc()
                     else:
-                        print(f"[PRICE ALERT] ⚠️  Notification already exists for this price, skipping duplicate")
+                        print(f"[PRICE ALERT]  Notification already exists for this price, skipping duplicate")
         finally:
             if should_close:
                 db.close()
@@ -355,7 +355,7 @@ class WishlistService:
             smtp_password = os.getenv('SMTP_PASSWORD', '')
             
             if not smtp_username or not smtp_password:
-                print(f"[EMAIL] ❌ SMTP NOT CONFIGURED - Emails will not be sent")
+                print(f"[EMAIL]  SMTP NOT CONFIGURED - Emails will not be sent")
                 print(f"[EMAIL] ============================================================")
                 print(f"[EMAIL] To enable email notifications, set these environment variables:")
                 print(f"[EMAIL]   SMTP_SERVER=smtp.gmail.com")

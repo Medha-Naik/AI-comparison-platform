@@ -4,19 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Product Details - AI Shopping Assistant</title>
+
   <link rel="stylesheet" href="{{ url_for('static', filename='product_details.css') }}">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
+
 <body>
   <header class="pd-header">
     <a class="back" href="/results"><i class="fa-solid fa-arrow-left"></i> Back to results</a>
     <div class="spacer"></div>
     <nav style="display: flex; gap: 15px; align-items: center;">
-      <a href="/" class="icon" title="Home" style="color: #666; font-size: 1.2rem; text-decoration: none; padding: 8px; border-radius: 50%; transition: all 0.2s;">
+      <a href="/" class="icon" title="Home" style="color: #666;">
         <i class="fa-solid fa-home"></i>
       </a>
-      <a href="/wishlist" class="icon" title="Wishlist" style="color: #666; font-size: 1.2rem; text-decoration: none; padding: 8px; border-radius: 50%; transition: all 0.2s;">
+      <a href="/wishlist" class="icon" title="Wishlist" style="color: #666;">
         <i class="fa-regular fa-heart"></i>
       </a>
     </nav>
@@ -29,7 +31,8 @@
       <div class="pd-info">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
           <h1 id="pdTitle" style="flex: 1; margin: 0;"></h1>
-          <button id="wishlistBtn" class="wishlist-button" title="Add to Wishlist" style="margin-left: 16px; background: none; border: 2px solid #e5e7eb; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; flex-shrink: 0;">
+          <button id="wishlistBtn" class="wishlist-button" title="Add to Wishlist"
+            style="margin-left: 16px; background: none; border: 2px solid #e5e7eb; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
             <i class="fa-regular fa-heart" style="font-size: 20px; color: #666;"></i>
           </button>
         </div>
@@ -43,29 +46,37 @@
       </div>
     </section>
 
-    <!-- Price Recommendation Section -->
+    <!-- Buy or Wait Recommendation -->
     <section class="pd-recommendation">
-      <h2 style="margin: 0 0 16px; font-size: 18px;">Buy or Wait Recommendation</h2>
+      <h2>Buy or Wait Recommendation</h2>
       <div id="priceRecommendation">
-        <p style="color: #6b7280;">Loading recommendation...</p>
+        <p>Loading recommendation...</p>
       </div>
     </section>
 
-    <!-- Price History Chart -->
-<section class="pd-chart">
-  <div class="pd-chart-header">
-    <h2>30-Day Price History</h2>
-  </div>
-  <div class="chart-wrapper">
-    <canvas id="pdChart"></canvas>
-  </div>
-</section>
+    <!-- Price Chart -->
+    <section class="pd-chart">
+      <div class="pd-chart-header">
+        <h2>30-Day Price History</h2>
+      </div>
+      <div class="chart-wrapper">
+        <canvas id="pdChart"></canvas>
+      </div>
+    </section>
 
-    <!-- User Reviews -->
+    <!-- AI Review Analysis -->
     <section class="pd-reviews">
-      <h2>User Reviews</h2>
-      <div id="reviewsList" class="reviews-list">
-        <p style="color: #6b7280;">Loading reviews...</p>
+      <h2>AI Review Analysis</h2>
+      <div id="reviewSummary">
+        <p style="color: #6b7280;">Analyzing reviews...</p>
+      </div>
+
+      <div class="review-chart">
+        <canvas id="reviewSentimentChart" width="400" height="200"></canvas>
+      </div>
+
+      <div id="reviewsList">
+        <p style="color: #6b7280;">Loading detailed reviews...</p>
       </div>
     </section>
   </main>

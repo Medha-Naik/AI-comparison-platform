@@ -1,5 +1,4 @@
-# LAZY IMPORTS: Only import scrapers if needed (for performance)
-# Since all scrapers are disabled, we don't need to import them
+
 import sys
 import os
 import time
@@ -8,7 +7,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from data.mock_data import search_mock_offers
 
-# Lazy import scrapers only when actually needed
 _girias_real = None
 _flipkart_real = None
 _reliance_real = None
@@ -21,7 +19,7 @@ def _get_girias_scraper():
             from scrapers.girias import search_offers as girias_real
             _girias_real = girias_real
         except ImportError:
-            _girias_real = False  # Mark as unavailable
+            _girias_real = False 
     return _girias_real if _girias_real else None
 
 def _get_flipkart_scraper():
@@ -46,19 +44,14 @@ def _get_reliance_scraper():
             _reliance_real = False
     return _reliance_real if _reliance_real else None
 
-# Configuration - Enable real scrapers for specific stores via env flags
-# WARNING: Real scrapers can get blocked! Use mock data for reliable demos.
-# STATIC DATA MODE: All scrapers disabled - using only static JSON files
+#
 REAL_SCRAPERS_CONFIG = {
-    'flipkart': False,  # DISABLED - using static data only
-    'reliance digital': False,  # DISABLED - using static data only
-    'amazon': False,  # DISABLED - using static data only
+    'flipkart': False,  
+    'reliance digital': False,  
+    'amazon': False,  
     'girias': False  # DISABLED - using static data only
 }
 
-# To enable real scrapers (risky - currently disabled for static data mode):
-# Set env vars REAL_SCRAPER_FLIPKART/RELIANCE/AMAZON to true/1/yes
-# Be aware you may get blocked, rate-limited, or CAPTCHAs
 
 FALLBACK_TO_MOCK = os.getenv('FALLBACK_TO_MOCK', 'true').lower() in ('1', 'true', 'yes')
 
@@ -66,28 +59,17 @@ def search_with_fallback(query, stores=None):
     """
     Smart scraper with fallback to mock data - OPTIMIZED VERSION
     
-    Perfect for academic demos - always works!
-    
-    Args:
-        query: search query
-        stores: list of stores ['flipkart', 'amazon', 'reliance digital', 'croma'] or None for all
-    
-    Returns:
-        dict with offers and metadata
     """
     if stores is None:
         stores = ['flipkart', 'amazon', 'reliance digital', 'croma', 'girias']
     
     start_time = time.time()
     
-    # OPTIMIZATION: Since all scrapers are disabled, just load all products once
-    # and filter in a single pass instead of multiple calls
+
     if all(not REAL_SCRAPERS_CONFIG.get(store.lower(), False) for store in stores):
-        # All stores use mock data - optimize by doing ONE search for all stores
         from data.mock_data import search_mock_offers
         all_offers = search_mock_offers(query, stores)
         
-        # Build sources dict
         sources = {}
         for offer in all_offers:
             store = offer.get('store', '').lower()
@@ -103,12 +85,10 @@ def search_with_fallback(query, stores=None):
             'query': query
         }
     
-    # Fallback to original logic if any real scrapers are enabled
     all_offers = []
-    sources = {}  # Track which data source was used
+    sources = {}  
     errors = []
     
-    # Try Flipkart
     if 'flipkart' in stores:
         if REAL_SCRAPERS_CONFIG.get('flipkart', False):
             try:
@@ -131,29 +111,16 @@ def search_with_fallback(query, stores=None):
             all_offers.extend(mock_flipkart)
             sources['flipkart'] = 'mock'
     
-    # Try Amazon
     if 'amazon' in stores:
-        if REAL_SCRAPERS_CONFIG.get('amazon', False):
-            try:
-                raise Exception("Amazon scraper not available")
-            except Exception as e:
-                errors.append(f"Amazon: {str(e)}")
-                if FALLBACK_TO_MOCK:
-                    mock_amazon = search_mock_offers(query, ['amazon'])
-                    all_offers.extend(mock_amazon)
-                    sources['amazon'] = 'mock'
-        else:
-            mock_amazon = search_mock_offers(query, ['amazon'])
-            all_offers.extend(mock_amazon)
-            sources['amazon'] = 'mock'
+        mock_amazon = search_mock_offers(query, ['amazon'])
+        all_offers.extend(mock_amazon)
+        sources['amazon'] = 'mock'
     
-    # Croma
     if 'croma' in stores:
         mock_croma = search_mock_offers(query, ['croma'])
         all_offers.extend(mock_croma)
         sources['croma'] = 'mock'
     
-    # Reliance Digital
     if 'reliance digital' in stores:
         if REAL_SCRAPERS_CONFIG.get('reliance digital', False):
             try:
@@ -176,7 +143,6 @@ def search_with_fallback(query, stores=None):
             all_offers.extend(mock_reliance)
             sources['reliance digital'] = 'mock'
 
-    # Girias
     if 'girias' in stores:
         if REAL_SCRAPERS_CONFIG.get('girias', False):
             try:
@@ -209,7 +175,7 @@ def search_with_fallback(query, stores=None):
         'query': query
     }
 
-# Test function
+
 if __name__ == "__main__":
     print("Testing Safe Scraper with Fallback\n")
     print("="*60)

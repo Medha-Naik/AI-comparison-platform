@@ -1,5 +1,0 @@
-# Additional requirements for wishlist functionality
-sqlalchemy>=1.4.0
-flask-sqlalchemy>=2.5.0
-
-

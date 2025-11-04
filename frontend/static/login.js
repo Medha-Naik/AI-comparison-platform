@@ -39,6 +39,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextUrl = urlParams.get('next') || '/wishlist';
   const prefilledEmail = urlParams.get('email');
   const mode = urlParams.get('mode'); // 'signup' or 'login'
+  const newGoogleUser = urlParams.get('new_google_user'); // Check if new Google user
+
+  // ✨ NEW: Show welcome message for new Google users
+  if (newGoogleUser === 'true') {
+    showSuccess('🎉 Welcome! Your account has been created with Google. Redirecting to your wishlist...');
+    setTimeout(() => {
+      window.location.href = '/wishlist';
+    }, 2500);
+  }
 
   // Pre-fill email if provided in URL
   if (prefilledEmail) {
