@@ -12,7 +12,7 @@ from scrapers.safe_scrapers import search_with_fallback
 from utils.price_tracker import record_price, generate_offer_key, get_history
 from wishlist_api import wishlist_bp
 from auth_api import auth_bp, init_oauth
-from review_api import review_bp  # <-- this handles /api/reviews/analyze
+from review_api import review_bp
 
 # Initialize Flask
 app = Flask(__name__, template_folder='../frontend/templates', static_folder='../frontend/static', static_url_path='')
@@ -28,10 +28,10 @@ app.config.update(
 # Enable CORS
 CORS(app)
 
-# Register blueprints (✅ ensure this comes AFTER app initialization)
+# Register blueprints
 app.register_blueprint(wishlist_bp, url_prefix='/api')
 app.register_blueprint(auth_bp)
-app.register_blueprint(review_bp, url_prefix='/api')  # ✅ FIXED PREFIX
+app.register_blueprint(review_bp, url_prefix='/api')
 
 # Initialize OAuth
 init_oauth(app)
@@ -93,12 +93,15 @@ def profile():
     return render_template('profile.html')
 
 
+# ✅ FIXED: Corrected template name and passing item_id to template
+@app.route('/wishlist/item/<int:item_id>')
 @app.route('/wishlist/details/<int:item_id>')
+@app.route('/wishlistdetails/<int:item_id>')
 def wishlist_item_detail(item_id):
     """Serve the wishlist item detail page"""
     if not session.get('user_id'):
         return redirect(url_for('login_page'))
-    return render_template('wishlist_item_detail.html')
+    return render_template('wishlist_item_detail.html', item_id=item_id)
 
 
 # -------------------------------
@@ -131,7 +134,7 @@ def routes():
 def search():
     """Search for products across supported stores"""
     query = request.args.get('q', '').strip()
-    store_filter = request.args.get('store')  # Optional filter: 'flipkart', 'amazon', etc.
+    store_filter = request.args.get('store')
 
     if not query:
         return jsonify({"error": "Missing query parameter 'q'"}), 400

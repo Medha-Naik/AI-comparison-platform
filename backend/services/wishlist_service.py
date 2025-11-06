@@ -1,12 +1,14 @@
 """
-Wishlist service for managing user wishlists and price tracking
+Wishlist service - FIXED PRODUCT MATCHING
+✅ Better fuzzy matching for product names
+✅ Partial matching (e.g., "Dell XPS" matches "Dell 15DC15250")
+✅ Multiple matching strategies
 """
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from models import get_db, WishlistItem, PriceHistory, PriceNotification, User
-from scrapers.safe_scrapers import search_with_fallback
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional
@@ -19,19 +21,106 @@ class WishlistService:
     """Service for managing wishlist operations"""
     
     def __init__(self):
-        # Don't create DB session here - sessions should be created per request
-        # This prevents session leaks and thread safety issues
         pass
     
     def _get_db(self):
         """Get a new database session"""
         return next(get_db())
     
+    def _get_mock_prices(self, product_name: str) -> List[Dict]:
+        """Get current prices from mock data (static demo mode) with improved matching"""
+        try:
+            from data.mock_data import search_mock_offers, load_products
+            from difflib import get_close_matches
+            
+            print(f"[MOCK PRICES] Searching for: {product_name}")
+            
+            # Strategy 1: Try exact match first
+            results = search_mock_offers(product_name)
+            
+            if results:
+                print(f"[MOCK PRICES] ✅ Exact match found")
+                print(f"[MOCK PRICES] Found {len(results)} offers")
+                for offer in results:
+                    print(f"[MOCK PRICES]   - {offer.get('store')}: ₹{offer.get('price'):,}")
+                return results
+            
+            # Strategy 2: Load all products for fuzzy matching
+            all_products = load_products()
+            all_keys = list(all_products.keys())
+            product_lower = product_name.lower().strip()
+            
+            print(f"[MOCK PRICES] No exact match, trying fuzzy matching...")
+            print(f"[MOCK PRICES] Available products: {all_keys}")
+            
+            # Strategy 3: Partial word matching (e.g., "Dell XPS" matches "Dell 15DC15250")
+            matching_key = None
+            
+            # Extract significant words from search query (ignore common words)
+            search_words = [w for w in product_lower.split() if len(w) > 2]
+            print(f"[MOCK PRICES] Search words: {search_words}")
+            
+            for key in all_keys:
+                key_lower = key.lower()
+                # Check if all search words are present in the product key
+                if all(word in key_lower for word in search_words):
+                    matching_key = key
+                    print(f"[MOCK PRICES] ✅ Partial match found: '{key}'")
+                    break
+            
+            if not matching_key:
+                # Strategy 4: Check if any significant word matches
+                for key in all_keys:
+                    key_lower = key.lower()
+                    if any(word in key_lower for word in search_words):
+                        matching_key = key
+                        print(f"[MOCK PRICES] ✅ Partial word match found: '{key}'")
+                        break
+            
+            if not matching_key:
+                # Strategy 5: Use difflib for fuzzy matching with lower cutoff
+                matches = get_close_matches(
+                    product_lower, 
+                    [k.lower() for k in all_keys], 
+                    n=1, 
+                    cutoff=0.2  # Lowered from 0.3 for more lenient matching
+                )
+                
+                if matches:
+                    # Find the original key (preserve case)
+                    for k in all_keys:
+                        if k.lower() == matches[0]:
+                            matching_key = k
+                            print(f"[MOCK PRICES] ✅ Fuzzy match found: '{k}'")
+                            break
+            
+            if matching_key:
+                results = all_products.get(matching_key, [])
+                print(f"[MOCK PRICES] Found {len(results)} offers for '{matching_key}'")
+                for offer in results:
+                    print(f"[MOCK PRICES]   - {offer.get('store')}: ₹{offer.get('price'):,}")
+                return results
+            else:
+                print(f"[MOCK PRICES] ❌ No matching product found")
+                print(f"[MOCK PRICES] Available products: {', '.join(all_keys)}")
+                return []
+            
+        except Exception as e:
+            print(f"[MOCK PRICES] ❌ Error: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return []
+    
     def add_to_wishlist(self, user_email: str, product_name: str, 
                        product_category: str = None, target_price: float = None) -> Dict:
         """Add a product to user's wishlist"""
         db = self._get_db()
         try:
+            print(f"\n{'='*60}")
+            print(f"[WISHLIST] Adding product: {product_name}")
+            print(f"[WISHLIST] Target price: ₹{target_price:,.2f}" if target_price else "[WISHLIST] No target price set")
+            print(f"{'='*60}")
+            
             # Get or create user
             user = db.query(User).filter(User.email == user_email).first()
             if not user:
@@ -39,6 +128,7 @@ class WishlistService:
                 db.add(user)
                 db.commit()
                 db.refresh(user)
+                print(f"[WISHLIST] Created new user: {user_email}")
             
             # Check if product already exists in wishlist
             existing_item = db.query(WishlistItem).filter(
@@ -48,6 +138,7 @@ class WishlistService:
             ).first()
             
             if existing_item:
+                print(f"[WISHLIST] Product already in wishlist (ID: {existing_item.id})")
                 return {
                     "success": False,
                     "message": "Product already in wishlist",
@@ -66,8 +157,12 @@ class WishlistService:
             db.commit()
             db.refresh(wishlist_item)
             
-            # Immediately fetch current prices
-            self.update_prices_for_item(wishlist_item.id)
+            print(f"[WISHLIST] ✅ Created wishlist item ID: {wishlist_item.id}")
+            
+            # Check prices immediately (using mock data)
+            if target_price:
+                print(f"[WISHLIST] Checking if current mock prices meet target...")
+                self.check_target_price_alerts_mock(wishlist_item, db)
             
             return {
                 "success": True,
@@ -78,7 +173,7 @@ class WishlistService:
         except Exception as e:
             db.rollback()
             import traceback
-            print(f"[WishlistService] Error adding to wishlist: {traceback.format_exc()}")
+            print(f"[WISHLIST] ❌ Error adding to wishlist: {traceback.format_exc()}")
             return {
                 "success": False,
                 "message": f"Error adding to wishlist: {str(e)}"
@@ -111,13 +206,13 @@ class WishlistService:
         except Exception as e:
             db.rollback()
             import traceback
-            print(f"[WishlistService] Error removing from wishlist: {traceback.format_exc()}")
+            print(f"[WISHLIST] Error removing from wishlist: {traceback.format_exc()}")
             return {"success": False, "message": f"Error removing from wishlist: {str(e)}"}
         finally:
             db.close()
     
     def get_wishlist(self, user_email: str) -> List[Dict]:
-        """Get user's wishlist with current prices"""
+        """Get user's wishlist with current prices from mock data"""
         db = self._get_db()
         try:
             user = db.query(User).filter(User.email == user_email).first()
@@ -131,23 +226,31 @@ class WishlistService:
             
             result = []
             for item in wishlist_items:
-                # Get latest prices for each store
-                latest_prices = db.query(PriceHistory).filter(
-                    PriceHistory.wishlist_item_id == item.id
-                ).order_by(PriceHistory.recorded_at.desc()).all()
+                # Get current prices from mock data (not database)
+                mock_offers = self._get_mock_prices(item.product_name)
                 
-                # Group by store and get latest price for each
                 store_prices = {}
-                for price in latest_prices:
-                    if price.store not in store_prices:
-                        store_prices[price.store] = {
-                            "price": price.price,
-                            "price_display": price.price_display,
-                            "url": price.product_url,
-                            "title": price.product_title,
-                            "image": price.product_image,
-                            "recorded_at": price.recorded_at.isoformat()
+                lowest_price = None
+                
+                for offer in mock_offers:
+                    store = offer.get('store', '').lower().strip()
+                    price = offer.get('price')
+                    
+                    if not store or price is None:
+                        continue
+                    
+                    if store not in store_prices or price < store_prices[store]['price']:
+                        store_prices[store] = {
+                            "price": price,
+                            "price_display": offer.get('price_display', f"₹{price:,}"),
+                            "url": offer.get('url', ''),
+                            "title": offer.get('title', ''),
+                            "image": offer.get('image', ''),
+                            "recorded_at": datetime.now().isoformat()
                         }
+                        
+                        if lowest_price is None or price < lowest_price:
+                            lowest_price = price
                 
                 result.append({
                     "id": item.id,
@@ -156,14 +259,14 @@ class WishlistService:
                     "target_price": item.target_price,
                     "created_at": item.created_at.isoformat(),
                     "current_prices": store_prices,
-                    "lowest_price": min([p["price"] for p in store_prices.values()]) if store_prices else None
+                    "lowest_price": lowest_price
                 })
             
             return result
             
         except Exception as e:
             import traceback
-            print(f"[WishlistService] Error getting wishlist: {traceback.format_exc()}")
+            print(f"[WISHLIST] Error getting wishlist: {traceback.format_exc()}")
             return []
         finally:
             db.close()
@@ -172,8 +275,14 @@ class WishlistService:
         """Update target price for a wishlist item"""
         db = self._get_db()
         try:
+            print(f"\n{'='*60}")
+            print(f"[TARGET PRICE] Updating target price for item {wishlist_item_id}")
+            print(f"[TARGET PRICE] New target: ₹{target_price:,.2f}")
+            print(f"{'='*60}")
+            
             user = db.query(User).filter(User.email == user_email).first()
             if not user:
+                print(f"[TARGET PRICE] ❌ User not found: {user_email}")
                 return {"success": False, "message": "User not found"}
             
             wishlist_item = db.query(WishlistItem).filter(
@@ -182,196 +291,167 @@ class WishlistService:
             ).first()
             
             if not wishlist_item:
+                print(f"[TARGET PRICE] ❌ Wishlist item not found: {wishlist_item_id}")
                 return {"success": False, "message": "Wishlist item not found"}
             
+            old_target = wishlist_item.target_price
             wishlist_item.target_price = target_price
             db.commit()
             db.refresh(wishlist_item)
             
-            # Check if current prices already meet the new target price
-            # This ensures email is sent immediately if target is set below current price
-            self.check_target_price_alerts(wishlist_item, db)
+            print(f"[TARGET PRICE] ✅ Target price updated: ₹{old_target or 0:,.2f} → ₹{target_price:,.2f}")
+            
+            # Check if current mock prices meet the new target
+            print(f"[TARGET PRICE] Checking if current prices meet target...")
+            self.check_target_price_alerts_mock(wishlist_item, db)
             
             return {"success": True, "message": "Target price updated"}
             
         except Exception as e:
             db.rollback()
             import traceback
-            print(f"[WishlistService] Error updating target price: {traceback.format_exc()}")
+            print(f"[TARGET PRICE] ❌ Error updating target price: {traceback.format_exc()}")
             return {"success": False, "message": f"Error updating target price: {str(e)}"}
         finally:
             db.close()
     
-    def update_prices_for_item(self, wishlist_item_id: int) -> Dict:
-        """Update prices for a specific wishlist item"""
-        db = self._get_db()
-        try:
-            wishlist_item = db.query(WishlistItem).filter(
-                WishlistItem.id == wishlist_item_id
-            ).first()
-            
-            if not wishlist_item:
-                return {"success": False, "message": "Wishlist item not found"}
-            
-            # Search for the product across all platforms
-            search_results = search_with_fallback(wishlist_item.product_name)
-            
-            if not search_results or not search_results.get('offers'):
-                return {"success": False, "message": "No products found"}
-            
-            # Store price history for each offer
-            for offer in search_results['offers']:
-                price_history = PriceHistory(
-                    wishlist_item_id=wishlist_item.id,
-                    store=offer['store'],
-                    price=offer['price'],
-                    price_display=offer['price_display'],
-                    product_url=offer['url'],
-                    product_title=offer['title'],
-                    product_image=offer.get('image')
-                )
-                db.add(price_history)
-            
-            db.commit()
-            
-            # Check for target price alerts (pass db session)
-            self.check_target_price_alerts(wishlist_item, db)
-            
-            return {"success": True, "message": "Prices updated successfully"}
-            
-        except Exception as e:
-            db.rollback()
-            import traceback
-            print(f"[WishlistService] Error updating prices: {traceback.format_exc()}")
-            return {"success": False, "message": f"Error updating prices: {str(e)}"}
-        finally:
-            db.close()
-    
-    def check_target_price_alerts(self, wishlist_item: WishlistItem, db=None):
-        """Check if any current price meets the target price"""
+    def check_target_price_alerts_mock(self, wishlist_item: WishlistItem, db: Session):
+        """Check if any current MOCK price meets the target price"""
+        print(f"\n{'='*60}")
+        print(f"[PRICE ALERT] Checking alerts for item {wishlist_item.id}")
+        print(f"[PRICE ALERT] Product: {wishlist_item.product_name}")
+        print(f"{'='*60}")
+        
         if not wishlist_item.target_price:
-            print(f"[PRICE ALERT] No target price set for item {wishlist_item.id}, skipping check")
+            print(f"[PRICE ALERT] ⚠️ No target price set, skipping")
             return
         
-        print(f"[PRICE ALERT] Checking alerts for item {wishlist_item.id} '{wishlist_item.product_name}' with target price ₹{wishlist_item.target_price:,.2f}")
-        
-        # Use provided db session or create a new one
-        if db is None:
-            db = self._get_db()
-            should_close = True
-        else:
-            should_close = False
+        print(f"[PRICE ALERT] Target price: ₹{wishlist_item.target_price:,.2f}")
         
         try:
-            # Get latest prices for this item
-            latest_prices = db.query(PriceHistory).filter(
-                PriceHistory.wishlist_item_id == wishlist_item.id
-            ).order_by(PriceHistory.recorded_at.desc()).all()
+            # Get current prices from MOCK DATA (not database)
+            mock_offers = self._get_mock_prices(wishlist_item.product_name)
             
-            if not latest_prices:
-                print(f"[PRICE ALERT] No price history found for item {wishlist_item.id}")
+            if not mock_offers:
+                print(f"[PRICE ALERT] ⚠️ No mock prices found")
                 return
             
-            # Group by store and get latest price for each
-            store_prices = {}
-            for price in latest_prices:
-                if price.store not in store_prices:
-                    store_prices[price.store] = price
-            
-            print(f"[PRICE ALERT] Found {len(store_prices)} stores with prices: {list(store_prices.keys())}")
+            print(f"[PRICE ALERT] Found {len(mock_offers)} mock offers")
             
             # Check if any price is at or below target
-            for store, price_data in store_prices.items():
-                print(f"[PRICE ALERT] Checking {store}: Current price ₹{price_data.price:,.2f} vs Target ₹{wishlist_item.target_price:,.2f}")
-                if price_data.price <= wishlist_item.target_price:
-                    print(f"[PRICE ALERT] ✅ Price condition met! {store} price ₹{price_data.price:,.2f} <= target ₹{wishlist_item.target_price:,.2f}")
-                    # Check if we already sent a notification for this exact price
+            alerts_sent = 0
+            for offer in mock_offers:
+                store = offer.get('store', '').lower().strip()
+                price = offer.get('price')
+                
+                if not store or price is None:
+                    continue
+                
+                print(f"[PRICE ALERT]   - {store}: ₹{price:,.2f}")
+                
+                if price <= wishlist_item.target_price:
+                    print(f"\n[PRICE ALERT] 🎯 TARGET MET! {store}: ₹{price:,.2f} <= ₹{wishlist_item.target_price:,.2f}")
+                    
+                    # Check if we already sent a notification for this price
                     existing_notification = db.query(PriceNotification).filter(
                         PriceNotification.wishlist_item_id == wishlist_item.id,
                         PriceNotification.store == store,
-                        PriceNotification.current_price == price_data.price
+                        PriceNotification.current_price == price
                     ).first()
                     
-                    if not existing_notification:
-                        print(f"[PRICE ALERT] No existing notification found, creating new one...")
-                        try:
-                            # Create notification record first
-                            notification = PriceNotification(
-                                user_id=wishlist_item.user_id,
-                                wishlist_item_id=wishlist_item.id,
-                                store=store,
-                                current_price=price_data.price,
-                                target_price=wishlist_item.target_price,
-                                product_url=price_data.product_url
-                            )
-                            db.add(notification)
-                            db.commit()
-                            print(f"[PRICE ALERT] ✅ Created notification record for item {wishlist_item.id}, store {store}, price ₹{price_data.price:,.2f}")
-                            
-                            # Get user email before starting thread
-                            user = db.query(User).filter(User.id == wishlist_item.user_id).first()
-                            user_email = user.email if user else None
-                            
-                            # Send email notification asynchronously (don't block)
-                            if user_email:
-                                print(f"[PRICE ALERT] User email found: {user_email}, starting email thread...")
-                                try:
-                                    import threading
-                                    thread = threading.Thread(
-                                        target=self.send_price_alert_email,
-                                        args=(wishlist_item, price_data, user_email),
-                                        daemon=True
-                                    )
-                                    thread.start()
-                                    print(f"[PRICE ALERT]  Started email thread for '{wishlist_item.product_name}' to {user_email}")
-                                except Exception as email_thread_error:
-                                    print(f"[PRICE ALERT]  Error starting email thread: {str(email_thread_error)}")
-                                    import traceback
-                                    traceback.print_exc()
-                            else:
-                                print(f"[PRICE ALERT]  No email found for user {wishlist_item.user_id}, skipping email notification")
-                        except Exception as e:
-                            db.rollback()
-                            print(f"[PRICE ALERT]  Error creating notification: {str(e)}")
-                            import traceback
-                            traceback.print_exc()
-                    else:
-                        print(f"[PRICE ALERT]  Notification already exists for this price, skipping duplicate")
-        finally:
-            if should_close:
-                db.close()
+                    if existing_notification:
+                        print(f"[PRICE ALERT] ℹ️ Notification already sent for this price, skipping")
+                        continue
+                    
+                    print(f"[PRICE ALERT] Creating notification record...")
+                    
+                    # Create notification record
+                    notification = PriceNotification(
+                        user_id=wishlist_item.user_id,
+                        wishlist_item_id=wishlist_item.id,
+                        store=store,
+                        current_price=price,
+                        target_price=wishlist_item.target_price,
+                        product_url=offer.get('url', '')
+                    )
+                    db.add(notification)
+                    db.commit()
+                    print(f"[PRICE ALERT] ✅ Notification record created (ID: {notification.id})")
+                    
+                    # Get user email
+                    user = db.query(User).filter(User.id == wishlist_item.user_id).first()
+                    if not user or not user.email:
+                        print(f"[PRICE ALERT] ⚠️ No email found for user {wishlist_item.user_id}")
+                        continue
+                    
+                    print(f"[PRICE ALERT] Sending email to {user.email}...")
+                    
+                    # Create mock price history object for email
+                    price_data = type('PriceData', (), {
+                        'store': store,
+                        'price': price,
+                        'price_display': offer.get('price_display', f"₹{price:,}"),
+                        'product_url': offer.get('url', ''),
+                        'product_title': offer.get('title', wishlist_item.product_name),
+                        'product_image': offer.get('image')
+                    })()
+                    
+                    # Send email in background thread
+                    try:
+                        import threading
+                        thread = threading.Thread(
+                            target=self.send_price_alert_email,
+                            args=(wishlist_item, price_data, user.email),
+                            daemon=True
+                        )
+                        thread.start()
+                        alerts_sent += 1
+                        print(f"[PRICE ALERT] ✅ Email thread started")
+                    except Exception as thread_error:
+                        print(f"[PRICE ALERT] ❌ Error starting email thread: {str(thread_error)}")
+                        import traceback
+                        traceback.print_exc()
+            
+            if alerts_sent == 0:
+                print(f"[PRICE ALERT] No prices meet target (all above ₹{wishlist_item.target_price:,.2f})")
+            else:
+                print(f"[PRICE ALERT] ✅ {alerts_sent} alert(s) triggered")
+                
+        except Exception as e:
+            print(f"[PRICE ALERT] ❌ Error checking alerts: {str(e)}")
+            import traceback
+            traceback.print_exc()
+        
+        print(f"{'='*60}\n")
     
-    def send_price_alert_email(self, wishlist_item: WishlistItem, price_data: PriceHistory, user_email: str):
-        """Send email notification for price alert (runs in background thread)"""
+    def send_price_alert_email(self, wishlist_item: WishlistItem, price_data, user_email: str):
+        """Send email notification for price alert"""
+        print(f"\n{'='*60}")
+        print(f"[EMAIL] Starting email send process")
+        print(f"[EMAIL] To: {user_email}")
+        print(f"[EMAIL] Product: {wishlist_item.product_name}")
+        print(f"{'='*60}")
+        
         try:
             if not user_email:
-                print(f"[EMAIL] Skipping email - no email provided for user {wishlist_item.user_id}")
+                print(f"[EMAIL] ❌ No email provided")
                 return
             
-            # Email configuration (you'll need to set these in environment variables)
+            # Email configuration
             smtp_server = os.getenv('SMTP_SERVER', 'smtp.gmail.com')
             smtp_port = int(os.getenv('SMTP_PORT', '587'))
             smtp_username = os.getenv('SMTP_USERNAME', '')
             smtp_password = os.getenv('SMTP_PASSWORD', '')
             
-            if not smtp_username or not smtp_password:
-                print(f"[EMAIL]  SMTP NOT CONFIGURED - Emails will not be sent")
-                print(f"[EMAIL] ============================================================")
-                print(f"[EMAIL] To enable email notifications, set these environment variables:")
-                print(f"[EMAIL]   SMTP_SERVER=smtp.gmail.com")
-                print(f"[EMAIL]   SMTP_PORT=587")
-                print(f"[EMAIL]   SMTP_USERNAME=your.email@gmail.com")
-                print(f"[EMAIL]   SMTP_PASSWORD=your-app-password")
-                print(f"[EMAIL]")
-                print(f"[EMAIL] Gmail Setup Instructions:")
-                print(f"[EMAIL]   1. Enable 2-Factor Authentication on your Google account")
-                print(f"[EMAIL]   2. Go to: https://myaccount.google.com/apppasswords")
-                print(f"[EMAIL]   3. Generate an App Password for 'Mail'")
-                print(f"[EMAIL]   4. Use that 16-character password as SMTP_PASSWORD")
-                print(f"[EMAIL] ============================================================")
-                return
+            print(f"[EMAIL] SMTP Config:")
+            print(f"[EMAIL]   Server: {smtp_server}:{smtp_port}")
+            print(f"[EMAIL]   Username: {smtp_username}")
+            print(f"[EMAIL]   Password: {'*' * len(smtp_password) if smtp_password else 'NOT SET'}")
             
-            print(f"[EMAIL] Attempting to send price alert to {user_email} for {wishlist_item.product_name}")
+            if not smtp_username or not smtp_password:
+                print(f"[EMAIL] ❌ SMTP credentials not configured!")
+                print(f"[EMAIL] Set SMTP_USERNAME and SMTP_PASSWORD in .env file")
+                return
             
             # Create message
             msg = MIMEMultipart()
@@ -394,7 +474,7 @@ class WishlistService:
                         <p style="margin: 5px 0;"><strong>Store:</strong> {price_data.store.title()}</p>
                         <p style="margin: 5px 0;"><strong>Current Price:</strong> <span style="color: #10b981; font-size: 1.2em; font-weight: bold;">{price_data.price_display}</span></p>
                         <p style="margin: 5px 0;"><strong>Your Target Price:</strong> ₹{wishlist_item.target_price:,.2f}</p>
-                        <p style="margin: 10px 0 0 0;"><strong>You saved:</strong> <span style="color: #10b981; font-size: 1.1em; font-weight: bold;">₹{savings:,.2f}</span>!</p>
+                        <p style="margin: 10px 0 0 0;"><strong>You're within budget by:</strong> <span style="color: #10b981; font-size: 1.1em; font-weight: bold;">₹{abs(savings):,.2f}</span>!</p>
                     </div>
                     
                     <div style="text-align: center; margin: 30px 0;">
@@ -412,57 +492,29 @@ class WishlistService:
             
             msg.attach(MIMEText(body, 'html'))
             
-            # Send email
+            print(f"[EMAIL] Connecting to SMTP server...")
             server = smtplib.SMTP(smtp_server, smtp_port)
             server.starttls()
+            print(f"[EMAIL] Logging in...")
             server.login(smtp_username, smtp_password)
+            print(f"[EMAIL] Sending email...")
             text = msg.as_string()
             server.sendmail(smtp_username, user_email, text)
             server.quit()
             
-            print(f"[EMAIL]  Price alert email successfully sent to {user_email}")
+            print(f"[EMAIL] ✅ Email sent successfully to {user_email}!")
+            print(f"{'='*60}\n")
             
         except smtplib.SMTPAuthenticationError as e:
-            print(f"[EMAIL]  SMTP Authentication Error: {str(e)}")
-            print(f"[EMAIL] Check your SMTP_USERNAME and SMTP_PASSWORD. For Gmail, use an App Password.")
-        except smtplib.SMTPException as e:
-            print(f"[EMAIL]  SMTP Error: {str(e)}")
+            print(f"[EMAIL] ❌ SMTP Authentication Error: {str(e)}")
+            print(f"[EMAIL] Check your SMTP_USERNAME and SMTP_PASSWORD")
+            print(f"[EMAIL] For Gmail, use an App Password from: https://myaccount.google.com/apppasswords")
         except Exception as e:
-            print(f"[EMAIL]  Error sending email: {str(e)}")
+            print(f"[EMAIL] ❌ Error sending email: {str(e)}")
             import traceback
             traceback.print_exc()
-    
-    def update_all_prices(self) -> Dict:
-        """Update prices for all active wishlist items"""
-        db = self._get_db()
-        try:
-            active_items = db.query(WishlistItem).filter(
-                WishlistItem.is_active == True
-            ).all()
-            
-            updated_count = 0
-            for item in active_items:
-                result = self.update_prices_for_item(item.id)
-                if result['success']:
-                    updated_count += 1
-            
-            return {
-                "success": True,
-                "message": f"Updated prices for {updated_count} wishlist items"
-            }
-            
-        except Exception as e:
-            import traceback
-            print(f"[WishlistService] Error updating all prices: {traceback.format_exc()}")
-            return {"success": False, "message": f"Error updating all prices: {str(e)}"}
         finally:
-            db.close()
+            print(f"{'='*60}\n")
 
 # Global instance
 wishlist_service = WishlistService()
-
-
-
-
-
-
