@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Product Details - AI Shopping Assistant</title>
+  <title>Wishlist Item Details - AI Shopping Assistant</title>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -36,7 +36,7 @@
       <a href="/wishlist" class="icon active" id="wishlistLink" title="Wishlist">
         <i class="fa-solid fa-heart"></i>
       </a>
-      <a href="#" class="icon" id="profileLink" title="Profile">
+      <a href="/profile" class="icon" id="profileLink" title="Profile">
         <i class="fa-regular fa-user"></i>
       </a>
     </nav>
@@ -96,9 +96,16 @@
     </div>
   </main>
 
+  <!-- ✅ Ensure ITEM_ID is always numeric -->
   <script>
-    const ITEM_ID = "{{ item_id }}";
+    const ITEM_ID = parseInt('{{ item_id | default(0) }}', 10);
+    if (!ITEM_ID || isNaN(ITEM_ID)) {
+      console.error("Invalid ITEM_ID passed to page");
+      alert("Could not load wishlist item. Redirecting...");
+      window.location.href = '/wishlist';
+    }
   </script>
+
   <script src="{{ url_for('static', filename='wishlist_item_detail.js') }}"></script>
 </body>
 </html>

@@ -91,9 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem('userEmail', currentUserEmail);
           
           const emailSection = document.getElementById('emailInputSection');
-          if (emailSection) {
-            emailSection.style.display = 'none';
-          }
+          if (emailSection) emailSection.style.display = 'none';
           
           const loggedInSection = document.createElement('div');
           loggedInSection.style.cssText = 'margin-bottom: 20px; padding: 15px; background: #e8f5e9; border-radius: 8px; border: 1px solid #4caf50;';
@@ -105,9 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
           
           const container = document.querySelector('.wishlist-container');
           const header = container.querySelector('.wishlist-header');
-          if (header) {
-            header.after(loggedInSection);
-          }
+          if (header) header.after(loggedInSection);
           
           loadWishlistForLoggedInUser();
         }
@@ -149,6 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadWishlistForLoggedInUser();
   }
 
+  // ✅ FIXED: Navigate using /wishlist/item/<id>, not /wishlist/details/<id>
   function displayWishlist(wishlist) {
     hideLoading();
     
@@ -166,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const lowestPrice = item.lowest_price;
       
       html += `
-        <div class="wishlist-item" data-item-id="${item.id}" style="cursor: pointer;" onclick="window.location.href='/wishlist/details/${item.id}'">
+        <div class="wishlist-item" data-item-id="${item.id}" style="cursor: pointer;" onclick="viewItemDetails(${item.id})">
           <div class="wishlist-item-header">
             <div class="wishlist-item-info">
               <h3>${item.product_name}</h3>
@@ -203,6 +200,15 @@ document.addEventListener("DOMContentLoaded", () => {
     wishlistItems.innerHTML = html;
   }
 
+  // ✅ NEW FUNCTION: handle navigation correctly
+  window.viewItemDetails = function(itemId) {
+    if (!itemId || isNaN(itemId)) {
+      alert("Invalid item ID");
+      return;
+    }
+    window.location.href = `/wishlist/item/${itemId}`;
+  };
+
   function showEmptyState() {
     wishlistItems.style.display = 'none';
     emptyWishlist.style.display = 'block';
@@ -231,9 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const response = await fetch('/api/wishlist/remove', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           user_email: currentUserEmail,
           wishlist_item_id: itemId
@@ -264,10 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
     refreshPricesBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Refreshing...';
     
     try {
-      const response = await fetch('/api/wishlist/update-prices', {
-        method: 'POST'
-      });
-      
+      const response = await fetch('/api/wishlist/update-prices', { method: 'POST' });
       const data = await response.json();
       
       if (data.success) {
@@ -301,9 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
     notification.textContent = message;
     document.body.appendChild(notification);
     
-    setTimeout(() => {
-      document.body.removeChild(notification);
-    }, 3000);
+    setTimeout(() => document.body.removeChild(notification), 3000);
   }
 
   window.removeFromWishlistHandler = removeFromWishlistInner;

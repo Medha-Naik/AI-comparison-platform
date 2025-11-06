@@ -7,6 +7,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const image = params.get('image') || '';
   const url = params.get('url') || '';
 
+  // ✅ Capture and store search query for back navigation
+  const query = params.get('q');
+  if (query) {
+    localStorage.setItem('lastSearchQuery', query);
+  }
+
+  // ✅ Smart "Back to Results" navigation
+  const backBtn = document.getElementById('backBtn');
+  if (backBtn) {
+    backBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const lastQuery = localStorage.getItem('lastSearchQuery');
+      if (lastQuery) {
+        window.location.href = `/results?q=${encodeURIComponent(lastQuery)}`;
+      } else {
+        window.history.back();
+      }
+    });
+  }
+
   // ---- HERO SETUP ----
   document.getElementById('pdTitle').textContent = title;
   document.getElementById('pdStore').textContent = store;
@@ -71,7 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const prices = history.map(h => h.price);
     const min = Math.min(...prices);
-    const max = Math.max(...prices);
     const avg = prices.reduce((a, b) => a + b, 0) / prices.length;
     const latest = prices[prices.length - 1];
     let text = '', icon = '', color = '';
@@ -116,7 +135,9 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = `/login?next=${encodeURIComponent(window.location.href)}`;
         return;
       }
+
       if (isInWishlist) {
+        // --- Remove from wishlist ---
         const check = await (await fetch(`/api/wishlist/check/${encodeURIComponent(title)}`)).json();
         if (check.in_wishlist && check.wishlist_item) {
           const remove = await (await fetch('/api/wishlist/remove', {
@@ -129,19 +150,48 @@ document.addEventListener('DOMContentLoaded', () => {
             wishlistBtn.style.borderColor = '#e5e7eb';
             wishlistBtn.style.background = 'none';
             wishlistIcon.style.color = '#666';
+            // Small delay to ensure backend updates before next add
+            await new Promise(r => setTimeout(r, 500));
           }
         }
       } else {
-        const response = await (await fetch('/api/wishlist/add', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ product_name: title, product_category: 'Electronics' })
-        })).json();
-        if (response.success) {
-          isInWishlist = true;
-          wishlistIcon.classList.replace('fa-regular', 'fa-solid');
-          wishlistBtn.style.borderColor = '#ef4444';
-          wishlistBtn.style.background = '#fef2f2';
-          wishlistIcon.style.color = '#ef4444';
+        // --- Always ask for target price when adding ---
+        const targetPriceInput = prompt(
+          `Add "${title}" to wishlist?\n\n` +
+          `Optional: Enter your target price (₹) or leave blank:\n` +
+          (price ? `Current price: ${price}` : ''),
+          ''
+        );
+
+        let targetPrice = null;
+        if (targetPriceInput !== null) {
+          if (targetPriceInput.trim() !== '') {
+            const cleaned = targetPriceInput.trim().replace(/[₹,\s]/g, '');
+            const parsed = parseFloat(cleaned);
+            if (!isNaN(parsed) && parsed > 0) targetPrice = parsed;
+            else {
+              alert('Invalid price. Please enter a valid number or leave blank.');
+              return;
+            }
+          }
+
+          const response = await (await fetch('/api/wishlist/add', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              product_name: title,
+              product_category: 'Electronics',
+              target_price: targetPrice,
+              force_new: true
+            })
+          })).json();
+
+          if (response.success) {
+            isInWishlist = true;
+            wishlistIcon.classList.replace('fa-regular', 'fa-solid');
+            wishlistBtn.style.borderColor = '#ef4444';
+            wishlistBtn.style.background = '#fef2f2';
+            wishlistIcon.style.color = '#ef4444';
+          }
         }
       }
     } catch (err) {
