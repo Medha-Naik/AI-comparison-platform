@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wishlist Item Details - AI Shopping Assistant</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='wishlist.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="/">AI Shopping</a>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search for products..." />
+      <button id="searchBtn" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+
+    <nav class="icons">
+      <a href="/" class="icon" title="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+      <a href="/wishlist" class="icon active" id="wishlistLink" title="Wishlist">
+        <i class="fa-solid fa-heart"></i>
+      </a>
+      <a href="/profile" class="icon" id="profileLink" title="Profile">
+        <i class="fa-regular fa-user"></i>
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="wishlist-container">
+      <!-- Back Button -->
+      <div style="margin-bottom: 20px;">
+        <a href="/wishlist" class="btn btn-secondary">
+          <i class="fa-solid fa-arrow-left"></i> Back to Wishlist
+        </a>
+      </div>
+
+      <!-- Loading State -->
+      <div class="loading" id="loadingState">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        <p>Loading product details...</p>
+      </div>
+
+      <!-- Product Header -->
+      <div id="productHeader" style="display: none;">
+        <div class="wishlist-header">
+          <div>
+            <h1 id="productName" style="margin-bottom: 10px;"></h1>
+            <p id="productCategory" style="color: #666; margin: 0;"></p>
+          </div>
+          <div class="wishlist-actions">
+            <button id="updateTargetBtn" class="btn btn-secondary">
+              <i class="fa-solid fa-edit"></i> Update Target Price
+            </button>
+            <button id="removeItemBtn" class="btn btn-danger">
+              <i class="fa-solid fa-trash"></i> Remove from Wishlist
+            </button>
+          </div>
+        </div>
+
+        <!-- Target Price -->
+        <div id="targetPriceSection" style="margin-bottom: 30px;"></div>
+
+        <!-- Current Prices -->
+        <div class="wishlist-item" style="margin-bottom: 30px;">
+          <h2 style="margin-bottom: 20px;"><i class="fa-solid fa-tags"></i> Current Prices</h2>
+          <div class="price-display" id="currentPrices">
+            <!-- Current prices will be loaded here -->
+          </div>
+        </div>
+
+        <!-- Price History Chart -->
+        <div class="wishlist-item">
+          <h2 style="margin-bottom: 20px;"><i class="fa-solid fa-chart-line"></i> Price History (Last 30 Days)</h2>
+          <div style="position: relative; height: 400px;">
+            <canvas id="priceHistoryChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ✅ Ensure ITEM_ID is always numeric -->
+  <script>
+    const ITEM_ID = parseInt('{{ item_id | default(0) }}', 10);
+    if (!ITEM_ID || isNaN(ITEM_ID)) {
+      console.error("Invalid ITEM_ID passed to page");
+      alert("Could not load wishlist item. Redirecting...");
+      window.location.href = '/wishlist';
+    }
+  </script>
+
+  <script src="{{ url_for('static', filename='wishlist_item_detail.js') }}"></script>
+</body>
+</html>

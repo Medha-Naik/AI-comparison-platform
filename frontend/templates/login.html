@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - AI Shopping Assistant</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='wishlist.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="/">AI Shopping</a>
+    </div>
+  </header>
+  <main>
+    <div class="wishlist-container" style="max-width:600px">
+      <div class="user-email-section">
+        <h1 style="margin-bottom:10px;" id="pageTitle">Sign in</h1>
+        <p id="pageSubtitle" style="color:#666; margin-bottom:20px; display:none;"></p>
+        <div class="email-input-container">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="loginEmail" placeholder="you@example.com" />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="loginPassword" placeholder="••••••••" />
+          </div>
+          <div id="nameGroup" class="form-group" style="display:none;">
+            <label>Name (optional)</label>
+            <input type="text" id="registerName" placeholder="Your name" />
+          </div>
+          <div class="form-actions">
+            <button id="loginBtn" class="btn btn-primary">Login</button>
+            <button id="registerBtn" class="btn btn-secondary">Create account</button>
+          </div>
+          <div id="googleOAuthDiv">
+            <div style="margin-top:16px; text-align:center; color:#666;">or</div>
+            <div class="form-actions" style="justify-content:center;">
+              <a href="/auth/google" id="googleOAuthBtn" class="btn btn-secondary" style="background:#fff;border:1px solid #e8ecf4;color:#333;">
+                <i class="fa-brands fa-google" style="color:#db4437;"></i>
+                Continue with Google
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="{{ url_for('static', filename='login.js') }}"></script>
+</body>
+</html>

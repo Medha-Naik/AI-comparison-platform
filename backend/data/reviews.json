@@ -1,0 +1,131 @@
+{
+  "iphone 15": [
+    "The display is stunning and the camera captures details beautifully.",
+    "Battery life is great for daily use but drains faster during gaming.",
+    "Feels premium in hand and the build quality is excellent.",
+    "Price is slightly high compared to previous versions.",
+    "Performance is smooth, even with multiple apps running.",
+    "Face ID is quick and accurate.",
+    "Overheats a bit when recording 4K videos.",
+    "The blue color variant looks very elegant.",
+    "iOS 17 runs flawlessly on this phone.",
+    "Storage options could have been better for the price."
+  ],
+
+  "samsung galaxy s24": [
+    "Display quality is top-notch with rich colors and smooth scrolling.",
+    "Camera performance is outstanding in all lighting conditions.",
+    "Battery lasts a full day easily with moderate use.",
+    "Phone feels lightweight yet solid.",
+    "Some heating issues while gaming.",
+    "Samsung's UI is cleaner and smoother than before.",
+    "The AI features are actually helpful in daily use.",
+    "Price is slightly higher than expected for 256GB storage.",
+    "Fingerprint sensor works fast and reliably.",
+    "Video stabilization is excellent — perfect for vloggers."
+  ],
+
+  "oneplus 12": [
+    "Super fast charging and great battery optimization.",
+    "The display is bright and color-accurate.",
+    "Performance is flagship-level for the price.",
+    "Camera is good but struggles in low light.",
+    "Build quality feels very solid and premium.",
+    "OxygenOS is still one of the best Android experiences.",
+    "Phone gets a little warm during extended camera use.",
+    "Vibration motor feels very refined.",
+    "Face unlock and fingerprint both work instantly.",
+    "Value for money device overall!"
+  ],
+
+  "macbook air m2": [
+    "Extremely lightweight and easy to carry around.",
+    "Battery backup is phenomenal — lasts almost 15 hours on average use.",
+    "The M2 chip is very powerful for daily tasks and light editing.",
+    "Screen brightness and color accuracy are amazing.",
+    "Keyboard and trackpad feel premium and responsive.",
+    "Heats up slightly under heavy workloads but manageable.",
+    "Price could have been lower for 256GB variant.",
+    "Runs completely silent even during multitasking.",
+    "Perfect choice for students and professionals.",
+    "Build quality is exceptional and feels very sturdy."
+  ],
+
+  "dell xps 13": [
+    "Stunning display and ultra-thin bezels make it a joy to use.",
+    "Keyboard is comfortable and typing feels smooth.",
+    "Performance is fast thanks to the i7 processor and SSD.",
+    "Battery life is decent but not exceptional.",
+    "Fan noise is minimal under normal workloads.",
+    "Build quality is premium with a sleek aluminum design.",
+    "Gets warm under heavy tasks but not too hot.",
+    "Perfect for developers and office professionals.",
+    "A bit expensive but worth it for the portability.",
+    "Speaker quality is surprisingly good for such a thin laptop."
+  ],
+
+  "samsung tab s9": [
+    "Beautiful AMOLED display, perfect for watching movies and drawing.",
+    "The S Pen experience is smooth and very responsive.",
+    "Battery lasts long even with multitasking.",
+    "Build feels premium and slim.",
+    "Performance is flagship level — apps open instantly.",
+    "A bit pricey but delivers on quality.",
+    "Great for students and creative professionals.",
+    "Audio output is loud and clear with Dolby Atmos.",
+    "Multitasking and split screen features work flawlessly.",
+    "Charging speed could have been a little faster."
+  ],
+
+  "lg oled tv": [
+    "Picture quality is mind-blowing — blacks are truly black.",
+    "Colors pop and HDR performance is excellent.",
+    "Sound quality is great even without a soundbar.",
+    "The webOS interface is smooth and intuitive.",
+    "Remote control feels a bit bulky.",
+    "Gaming on this TV is an incredible experience with low input lag.",
+    "Slim design and premium finish make it look futuristic.",
+    "Price is on the higher side but worth every rupee.",
+    "No backlight bleed — perfect for dark rooms.",
+    "Setup was easy and quick out of the box."
+  ],
+
+  "gopro hero 12": [
+    "Video stabilization is unreal — super smooth footage even while running.",
+    "Battery life has improved a lot from previous versions.",
+    "Picture and video quality are excellent in daylight.",
+    "Struggles a bit in low light conditions.",
+    "Waterproofing works perfectly for underwater shots.",
+    "The new color tone looks more natural and less saturated.",
+    "Compact and easy to mount anywhere.",
+    "Menus are faster and touch response is better.",
+    "Voice control works fine but could be more accurate.",
+    "Perfect camera for travel and adventure enthusiasts."
+  ],
+
+  "hp smartchoice victus": [
+    "Handles gaming and editing smoothly with RTX 4050.",
+    "Thermal management is decent, no major heating issues.",
+    "Battery life is okay for a gaming laptop.",
+    "Display is sharp and color reproduction is nice.",
+    "Build quality is solid though slightly bulky.",
+    "Keyboard has good travel and RGB looks cool.",
+    "Speakers are loud but lack bass.",
+    "Fan noise is moderate even during heavy gaming.",
+    "Great performance for the price range.",
+    "Perfect balance between gaming and work."
+  ],
+
+  "dell 15dc15250": [
+    "Very fast performance with i5 13th Gen and SSD.",
+    "Boots up instantly and runs silently.",
+    "Display is bright and viewing angles are good.",
+    "Battery lasts around 5–6 hours on normal use.",
+    "Lightweight and great for office work.",
+    "Build feels premium for this price range.",
+    "Fans are quiet and cooling is efficient.",
+    "No lag during multitasking or browsing.",
+    "Keyboard is comfortable for long typing sessions.",
+    "A perfect productivity laptop under ₹60,000."
+  ]
+}

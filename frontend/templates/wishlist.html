@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Wishlist - AI Shopping Assistant</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='wishlist.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="/">AI Shopping</a>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search for products..." />
+      <button id="searchBtn" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+
+    <nav class="icons">
+      <a href="/" class="icon" title="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+      <a href="/wishlist" class="icon active" title="Wishlist">
+        <i class="fa-solid fa-heart"></i>
+      </a>
+      <a href="#" class="icon" id="profileLink" title="Profile">
+        <i class="fa-regular fa-user"></i>
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="wishlist-container">
+      <div class="wishlist-header">
+        <h1><i class="fa-solid fa-heart"></i> My Wishlist</h1>
+        <div class="wishlist-actions">
+          <button id="refreshPricesBtn" class="btn btn-primary">
+            <i class="fa-solid fa-sync-alt"></i> Refresh Prices
+          </button>
+          <!-- REMOVED: Add Product button -->
+        </div>
+      </div>
+
+      <!-- User Email Input - WRAPPED WITH emailInputSection -->
+      <div id="emailInputSection">
+        <div class="user-email-section" id="userEmailSection">
+          <div class="email-input-container">
+            <label for="userEmail">Enter your email to manage wishlist:</label>
+            <div class="email-input-group">
+              <input type="email" id="userEmail" placeholder="your.email@example.com" required />
+              <button id="loadWishlistBtn" class="btn btn-primary">Load Wishlist</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wishlist Items -->
+      <div class="wishlist-items" id="wishlistItems" style="display: none;">
+        <!-- Items will be loaded here -->
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-wishlist" id="emptyWishlist" style="display: none;">
+        <i class="fa-solid fa-heart-broken"></i>
+        <h2>Your wishlist is empty</h2>
+        <p>Start adding products to track their prices across multiple stores!</p>
+        <button id="startShoppingBtn" class="btn btn-primary">
+          <i class="fa-solid fa-shopping-cart"></i> Start Shopping
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div class="loading" id="loadingState" style="display: none;">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        <p>Loading your wishlist...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- REMOVED: Add Product Modal -->
+  <!-- REMOVED: Price History Modal -->
+
+  <!-- JS -->
+  <script src="{{ url_for('static', filename='wishlist.js') }}"></script>
+</body>
+</html>
